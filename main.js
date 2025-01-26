@@ -1,37 +1,24 @@
-document.addEventListener('DOMContentLoaded', async () => {
-    // Mobile menu toggle
-    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-    const navLinks = document.querySelector('.nav-links');
-    const currentPage = document.querySelector('.current-page');
-    
+// Wait for components to load before initializing
+document.addEventListener('DOMContentLoaded', () => {
+    // Wait for components to be loaded
+    const checkComponentsLoaded = setInterval(() => {
+        const header = document.querySelector('.main-nav');
+        const footer = document.querySelector('.footer-content');
+        
+        if (header && footer) {
+            clearInterval(checkComponentsLoaded);
+            initializeApp();
+        }
+    }, 100);
+});
+
+async function initializeApp() {
     // Initialize stats variable at the top level
     let stats = {
         experienceCount: { target: 0, current: 0 },
         likeRatio: { target: 0, current: 0, suffix: '%' },
         communitySize: { target: 2000000000, current: 0, format: true }
     };
-
-    mobileMenuBtn.addEventListener('click', () => {
-        mobileMenuBtn.classList.toggle('active');
-        navLinks.classList.toggle('active');
-    });
-
-    // Update current page text
-    document.querySelectorAll('.nav-links a').forEach(link => {
-        if (link.classList.contains('active')) {
-            currentPage.textContent = link.textContent;
-        }
-        
-        link.addEventListener('click', () => {
-            document.querySelectorAll('.nav-links a').forEach(l => l.classList.remove('active'));
-            link.classList.add('active');
-            currentPage.textContent = link.textContent;
-            
-            // Close mobile menu when link is clicked
-            mobileMenuBtn.classList.remove('active');
-            navLinks.classList.remove('active');
-        });
-    });
 
     // Load game data
     try {
@@ -470,44 +457,101 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Call updateMerchSlider when document is loaded
     updateMerchSlider();
 
-    // Initialize brands slider with data
+    // Function to generate brand frames
     async function initializeBrandsSlider() {
         try {
             const response = await fetch('./brand_data.json');
             const brandData = await response.json();
-            
             const brandsContainer = document.querySelector('.brands-container');
-            if (!brandsContainer) return;
-
-            // Clear existing placeholder items
-            brandsContainer.innerHTML = '';
-
-            // Create three sets of brands for infinite scroll
-            for (let i = 0; i < 3; i++) {
+            
+            // Function to create a single set of brand frames
+            const createBrandSet = () => {
+                const fragment = document.createDocumentFragment();
                 brandData.forEach(brand => {
                     const brandFrame = document.createElement('div');
                     brandFrame.className = 'brand-frame';
-                    
-                    // Create and add image
                     const img = document.createElement('img');
                     img.src = brand.image_url;
                     img.alt = brand.title;
+                    img.draggable = false;
                     brandFrame.appendChild(img);
-
-                    brandsContainer.appendChild(brandFrame);
+                    fragment.appendChild(brandFrame);
                 });
+                return fragment;
+            };
+
+            // Create three sets for seamless scrolling
+            brandsContainer.appendChild(createBrandSet());
+            brandsContainer.appendChild(createBrandSet());
+            brandsContainer.appendChild(createBrandSet());
+
+            // Start automatic scrolling
+            let scrollPosition = 0;
+            const scrollSpeed = 1;
+            
+            function scrollBrands() {
+                scrollPosition += scrollSpeed;
+                if (scrollPosition >= brandsContainer.scrollWidth / 3) {
+                    scrollPosition = 0;
+                }
+                brandsContainer.scrollLeft = scrollPosition;
+                requestAnimationFrame(scrollBrands);
             }
+            
+            scrollBrands();
         } catch (error) {
             console.error('Error loading brand data:', error);
         }
     }
 
-    initializeBrandsSlider();
+    // Function to generate merch items
+    async function initializeMerchSlider() {
+        try {
+            const response = await fetch('./merch_data.json');
+            const merchData = await response.json();
+            const merchContainer = document.querySelector('.merch-items');
+            
+            // Function to create a single set of merch items
+            const createMerchSet = () => {
+                const fragment = document.createDocumentFragment();
+                merchData.forEach(item => {
+                    const merchItem = document.createElement('div');
+                    merchItem.className = 'merch-item';
+                    const img = document.createElement('img');
+                    img.src = item.image_url;
+                    img.alt = item.title;
+                    img.draggable = false;
+                    merchItem.appendChild(img);
+                    fragment.appendChild(merchItem);
+                });
+                return fragment;
+            };
 
-    // Initialize both carousels when document is loaded
-    // document.addEventListener('DOMContentLoaded', () => {
-    //     console.log('DOMContentLoaded')
-    //     initializeBrandsSlider();
-    //     updateMerchSlider();
-    // });
-}); 
+            // Create three sets for seamless scrolling
+            merchContainer.appendChild(createMerchSet());
+            merchContainer.appendChild(createMerchSet());
+            merchContainer.appendChild(createMerchSet());
+
+            // Start automatic scrolling
+            let scrollPosition = 0;
+            const scrollSpeed = 1;
+            
+            function scrollMerch() {
+                scrollPosition += scrollSpeed;
+                if (scrollPosition >= merchContainer.scrollWidth / 3) {
+                    scrollPosition = 0;
+                }
+                merchContainer.scrollLeft = scrollPosition;
+                requestAnimationFrame(scrollMerch);
+            }
+            
+            scrollMerch();
+        } catch (error) {
+            console.error('Error loading merch data:', error);
+        }
+    }
+
+    // Initialize both sliders
+    await initializeBrandsSlider();
+    await initializeMerchSlider();
+} 

@@ -7,28 +7,7 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <nav class="main-nav">
-            <div class="logo">
-                <img src="./icon/ta_circle.png" alt="Twin Atlas Logo" class="logo-img">
-                <img src="./icon/textual_logo.png" alt="Twin Atlas" class="logo-text">
-            </div>
-            <span class="current-page">Home</span>
-            <button class="mobile-menu-btn">
-                <div class="hamburger">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </button>
-            <div class="nav-links">
-                <a href="/" class="active">Home</a>
-                <a href="https://merch.twinatlas.com" target="_blank">Merch</a>
-                <a href="/games">Games</a>
-                <a href="/careers">Careers</a>
-            </div>
-        </nav>
-    </header>
+    <div id="header"></div>
 
     <main>
         <section class="hero">
@@ -44,20 +23,7 @@
                 <p>Millions of people. Billions of plays. Why not partner with a game development studio who knows what your customers want to play?</p>
                 <div class="brands-slider">
                     <div class="brands-container">
-                        <!-- First set of brand frames -->
-                        <div class="brand-frame"></div>
-                        <div class="brand-frame"></div>
-                        <div class="brand-frame"></div>
-                        <div class="brand-frame"></div>
-                        <div class="brand-frame"></div>
-                        <div class="brand-frame"></div>
-                        <!-- Duplicate set for seamless scrolling -->
-                        <div class="brand-frame"></div>
-                        <div class="brand-frame"></div>
-                        <div class="brand-frame"></div>
-                        <div class="brand-frame"></div>
-                        <div class="brand-frame"></div>
-                        <div class="brand-frame"></div>
+                        <!-- Brands will be populated by JavaScript -->
                     </div>
                 </div>
                 <button class="cta-button" id="bizdevButton">Let's Talk Business</button>
@@ -66,27 +32,7 @@
             <div class="cta-card merch">
                 <div class="merch-slider">
                     <div class="merch-items">
-                        <!-- First set of items -->
-                        <div class="merch-item"></div>
-                        <div class="merch-item"></div>
-                        <div class="merch-item"></div>
-                        <div class="merch-item"></div>
-                        <div class="merch-item"></div>
-                        <div class="merch-item"></div>
-                        <!-- Duplicate set for seamless scrolling -->
-                        <div class="merch-item"></div>
-                        <div class="merch-item"></div>
-                        <div class="merch-item"></div>
-                        <div class="merch-item"></div>
-                        <div class="merch-item"></div>
-                        <div class="merch-item"></div>
-                        <!-- Third set for continuous flow -->
-                        <div class="merch-item"></div>
-                        <div class="merch-item"></div>
-                        <div class="merch-item"></div>
-                        <div class="merch-item"></div>
-                        <div class="merch-item"></div>
-                        <div class="merch-item"></div>
+                        <!-- Merch items will be populated by JavaScript -->
                     </div>
                 </div>
                 <div class="merch-content">
@@ -133,33 +79,9 @@
         </section>
     </main>
 
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>Twin Atlas</h3>
-                <p>Creating next-generation Roblox experiences</p>
-            </div>
-            <div class="footer-section">
-                <h3>Quick Links</h3>
-                <a href="/">Home</a>
-                <a href="https://merch.twinatlas.com" target="_blank">Merch</a>
-                <a href="/games">Games</a>
-                <a href="/careers">Careers</a>
-            </div>
-            <div class="footer-section">
-                <h3>Connect</h3>
-                <div class="social-links">
-                    <a href="#" target="_blank">Twitter</a>
-                    <a href="#" target="_blank">Discord</a>
-                    <a href="#" target="_blank">YouTube</a>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 Twin Atlas. All rights reserved.</p>
-        </div>
-    </footer>
+    <div id="footer"></div>
 
+    <script src="js/components.js"></script>
     <script src="main.js"></script>
 </body>
 </html> 
