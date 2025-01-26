@@ -4,6 +4,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     const navLinks = document.querySelector('.nav-links');
     const currentPage = document.querySelector('.current-page');
     
+    // Initialize stats variable at the top level
+    let stats = {
+        experienceCount: { target: 0, current: 0 },
+        likeRatio: { target: 0, current: 0, suffix: '%' },
+        communitySize: { target: 2000000000, current: 0, format: true }
+    };
+
     mobileMenuBtn.addEventListener('click', () => {
         mobileMenuBtn.classList.toggle('active');
         navLinks.classList.toggle('active');
@@ -28,27 +35,57 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Load game data
     try {
-        const response = await fetch('./game_data.json');
+        // First load the original game_data.json to get total game count
+        const originalResponse = await fetch('./game_data.json');
+        const originalGameData = await originalResponse.json();
+        const totalGames = originalGameData.length;
+
+        // Then load the updated game data for everything else
+        const response = await fetch('./updated_game_data.json');
         const gameData = await response.json();
         
-        // Filter only pinned games
-        const featuredGames = [];
-        for (const game of gameData) {
-            if (game.pinned === true) {
-                featuredGames.push(game);
+        console.log(gameData);
+
+        // Number formatting function
+        function formatNumber(number) {
+            if (number >= 1000000000) {
+                return (number / 1000000000).toFixed(1) + 'B';
             }
+            if (number >= 1000000) {
+                return (number / 1000000).toFixed(1) + 'M';
+            }
+            if (number >= 1000) {
+                return (number / 1000).toFixed(1) + 'K';
+            }
+            return number.toString();
         }
 
-        // Update stats
-        document.getElementById('experienceCount').textContent = gameData.length;
-        document.getElementById('likeRatio').textContent = '93%';
-        document.getElementById('communitySize').textContent = '2B+';
+        // Calculate average rating from total up and down votes
+        const totalUpVotes = gameData.reduce((sum, game) => sum + game.up_votes, 0);
+        const totalDownVotes = gameData.reduce((sum, game) => sum + game.down_votes, 0);
+        const averageRating = totalUpVotes + totalDownVotes > 0 
+            ? Math.round((totalUpVotes / (totalUpVotes + totalDownVotes)) * 100) 
+            : 0;
 
-        // Populate featured games
+        console.log('Vote Metrics:', {
+            totalUpVotes,
+            totalDownVotes,
+            totalVotes: totalUpVotes + totalDownVotes,
+            averageRating: averageRating + '%'
+        });
+
+        // Update stats targets
+        stats.experienceCount.target = totalGames;
+        stats.likeRatio.target = averageRating;
+
+        // Sort games by visits
+        const sortedGames = [...gameData].sort((a, b) => b.visits - a.visits);
+
+        // Populate games
         const gamesSlider = document.querySelector('.games-slider');
         gamesSlider.innerHTML = ''; // Clear any existing content
         
-        featuredGames.forEach(game => {
+        sortedGames.forEach(game => {
             const gameCard = document.createElement('div');
             gameCard.className = 'game-card';
             
@@ -56,10 +93,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <img src="${game.image_url}" alt="${game.title}" draggable="false">
                 <h3>${game.title}</h3>
                 <div class="game-stats">
-                    <span>10M+ visits</span>
-                    <span>95% likes</span>
+                    <span>${formatNumber(game.visits)} visits</span>
+                    <span>${formatNumber(game.up_votes)} likes</span>
                 </div>
-                <button class="cta-button" onclick="window.location.href='https://www.roblox.com/games/${game.place_id}'">Play Now</button>
+                <button class="cta-button" onclick="window.location.href='${game.link}'">Play Now</button>
             `;
             
             gamesSlider.appendChild(gameCard);
@@ -70,15 +107,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         const prevButton = document.querySelector('.slider-control.prev');
         const nextButton = document.querySelector('.slider-control.next');
         const cardWidth = 270 + 24; // card width + gap
-        let autoScrollInterval;
-        let lastInteractionTime = Date.now();
-        let autoScrollTimeout;
+        let autoScrollInterval = null;
+        let autoScrollTimeout = null;
+        let isAutoScrolling = false;
 
         const startAutoScroll = () => {
-            stopAutoScroll(); // Clear any existing interval
-            clearTimeout(autoScrollTimeout);
+            // Only start if not already auto-scrolling
+            if (isAutoScrolling) return;
+            
+            // Clear any existing timers
+            stopAutoScroll();
             
             autoScrollTimeout = setTimeout(() => {
+                isAutoScrolling = true;
                 autoScrollInterval = setInterval(() => {
                     const isAtEnd = gamesSlider.scrollLeft + gamesSlider.clientWidth >= gamesSlider.scrollWidth;
                     if (isAtEnd) {
@@ -91,9 +132,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         };
 
         const stopAutoScroll = () => {
-            clearInterval(autoScrollInterval);
-            clearTimeout(autoScrollTimeout);
-            lastInteractionTime = Date.now();
+            isAutoScrolling = false;
+            if (autoScrollInterval) {
+                clearInterval(autoScrollInterval);
+                autoScrollInterval = null;
+            }
+            if (autoScrollTimeout) {
+                clearTimeout(autoScrollTimeout);
+                autoScrollTimeout = null;
+            }
         };
 
         // Start auto-scroll initially
@@ -102,6 +149,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Pause auto-scroll on user interaction
         gamesSlider.addEventListener('mouseenter', stopAutoScroll);
         gamesSlider.addEventListener('mouseleave', startAutoScroll);
+        gamesSlider.addEventListener('touchstart', stopAutoScroll);
+        gamesSlider.addEventListener('touchend', startAutoScroll);
+        gamesSlider.addEventListener('scroll', () => {
+            // Stop auto-scroll during manual scrolling
+            if (!isAutoScrolling) {
+                stopAutoScroll();
+                // Restart auto-scroll after a brief delay
+                clearTimeout(autoScrollTimeout);
+                autoScrollTimeout = setTimeout(startAutoScroll, 30000);
+            }
+        });
 
         // Click and drag functionality
         let isDown = false;
@@ -118,27 +176,29 @@ document.addEventListener('DOMContentLoaded', async () => {
             stopAutoScroll();
         });
 
-        gamesSlider.addEventListener('mouseleave', () => {
-            if (isDown) {
-                isDown = false;
-                gamesSlider.style.scrollBehavior = 'smooth';
-            }
-        });
-
-        gamesSlider.addEventListener('mouseup', () => {
-            if (isDown) {
-                isDown = false;
-                gamesSlider.style.scrollBehavior = 'smooth';
-            }
-        });
-
-        gamesSlider.addEventListener('mousemove', (e) => {
+        document.addEventListener('mousemove', (e) => {
             if (!isDown) return;
             e.preventDefault();
             isDragging = true;
             const x = e.pageX - gamesSlider.offsetLeft;
             const walk = (x - startX);
             gamesSlider.scrollLeft = scrollLeft - walk;
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (!isDown) return;
+            isDown = false;
+            isDragging = false;
+            gamesSlider.style.scrollBehavior = 'smooth';
+            // Don't immediately start auto-scroll, wait for the delay
+            clearTimeout(autoScrollTimeout);
+            autoScrollTimeout = setTimeout(startAutoScroll, 30000);
+        });
+
+        gamesSlider.addEventListener('mouseleave', () => {
+            if (!isDown) {
+                startAutoScroll();
+            }
         });
 
         // Handle click events on game cards
@@ -157,6 +217,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 left: -cardWidth,
                 behavior: 'auto'
             });
+            // Restart auto-scroll after delay
+            clearTimeout(autoScrollTimeout);
+            autoScrollTimeout = setTimeout(startAutoScroll, 30000);
         });
 
         nextButton.addEventListener('click', () => {
@@ -165,6 +228,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 left: cardWidth,
                 behavior: 'auto'
             });
+            // Restart auto-scroll after delay
+            clearTimeout(autoScrollTimeout);
+            autoScrollTimeout = setTimeout(startAutoScroll, 30000);
         });
         // !!!! DO NOT REPLACE OR MODIFY THE CODE ABOVE - SCROLL FUNCTIONALITY WORKS PERFECTLY !!!!
 
@@ -222,23 +288,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.querySelectorAll('section').forEach((section) => {
         observer.observe(section);
     });
-
-    // Stat counter animation
-    const stats = {
-        experienceCount: { target: 12, current: 0 },
-        likeRatio: { target: 98, current: 0, suffix: '%' },
-        communitySize: { target: 1000000, current: 0, format: true }
-    };
-
-    function formatNumber(number) {
-        if (number >= 1000000) {
-            return (number / 1000000).toFixed(1) + 'M';
-        }
-        if (number >= 1000) {
-            return (number / 1000).toFixed(1) + 'K';
-        }
-        return number.toString();
-    }
 
     function animateCounter(element, stat) {
         const duration = 2000; // 2 seconds
