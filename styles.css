@@ -1,0 +1,1253 @@
+/* Import Futura Font */
+@font-face {
+    font-family: 'Futura';
+    src: url('font/Futura Black Font.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Futura';
+    src: url('font/Futura Heavy Font.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Futura';
+    src: url('font/Futura Medium BT.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Futura';
+    src: url('font/Futura Light BT.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Futura';
+    src: url('font/Futura Light Italic.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+}
+
+:root {
+    --gradient-start: #FF00FF;  /* Bright magenta */
+    --gradient-middle: #6C00FF;  /* Deep purple */
+    --gradient-end: #00FFFF;    /* Cyan */
+    --text-primary: #2d3748;
+    --text-secondary: #4a5568;
+    --background: #ffffff;
+    --card-background: #f7fafc;
+    --nav-button-bg: rgba(255, 255, 255, 0.2);
+    --nav-button-active: #FFFFFF;
+    --nav-text-active: #6C00FF;
+    --text-white: #FFFFFF;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background: rgb(30, 0, 60);
+    min-height: 100vh;
+}
+
+/* Common button style */
+.button, .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 1.5rem;
+    background: var(--nav-button-bg);
+    position: relative;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+}
+
+.cta-button {
+    font-family: "Futura", Sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 1rem 2rem;
+    position: relative;
+    overflow: visible;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    border: none;
+    cursor: pointer;
+    color: white;
+    text-decoration: none;
+}
+
+/* Outer stroke effect */
+.cta-button::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.4),
+        rgba(255, 255, 255, 0.1));
+    z-index: -2;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+}
+
+/* Inner stroke effect */
+.cta-button::after {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    background: rgb(30, 0, 60);
+    z-index: -1;
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+}
+
+.cta-button:hover {
+    transform: translateY(-2px) scale(1.02);
+}
+
+/* Play Now button specific styling */
+.featured-games .cta-button {
+    background: linear-gradient(135deg, 
+        rgba(255, 0, 255, 0.4),
+        rgba(108, 0, 255, 0.3));
+    box-shadow: 
+        0 0 20px rgba(255, 0, 255, 0.2),
+        0 0 40px rgba(255, 0, 255, 0.1);
+    animation: playNowPulse 2s infinite;
+}
+
+.featured-games .cta-button:hover {
+    background: linear-gradient(135deg, 
+        rgba(255, 0, 255, 0.6),
+        rgba(108, 0, 255, 0.5));
+    box-shadow: 
+        0 0 30px rgba(255, 0, 255, 0.3),
+        0 0 60px rgba(255, 0, 255, 0.2);
+}
+
+/* Business CTA specific styling */
+.cta-card.bizdev .cta-button {
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.3),
+        rgba(255, 255, 255, 0.15));
+    box-shadow: 
+        0 0 20px rgba(255, 255, 255, 0.15),
+        0 0 40px rgba(255, 255, 255, 0.1);
+}
+
+.cta-card.bizdev .cta-button:hover {
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.4),
+        rgba(255, 255, 255, 0.2));
+    box-shadow: 
+        0 0 30px rgba(255, 255, 255, 0.25),
+        0 0 60px rgba(255, 255, 255, 0.15);
+}
+
+@keyframes playNowPulse {
+    0% {
+        box-shadow: 
+            0 0 20px rgba(255, 0, 255, 0.2),
+            0 0 40px rgba(255, 0, 255, 0.1);
+    }
+    50% {
+        box-shadow: 
+            0 0 30px rgba(255, 0, 255, 0.3),
+            0 0 60px rgba(255, 0, 255, 0.2);
+    }
+    100% {
+        box-shadow: 
+            0 0 20px rgba(255, 0, 255, 0.2),
+            0 0 40px rgba(255, 0, 255, 0.1);
+    }
+}
+
+/* Shop Now button specific styling */
+.merch-content .cta-button {
+    background: linear-gradient(135deg, 
+        rgba(255, 0, 255, 0.3),
+        rgba(108, 0, 255, 0.2));
+    box-shadow: 
+        0 0 20px rgba(255, 0, 255, 0.2),
+        inset 0 0 10px rgba(255, 0, 255, 0.1);
+}
+
+.merch-content .cta-button:hover {
+    background: linear-gradient(135deg, 
+        rgba(255, 0, 255, 0.4),
+        rgba(108, 0, 255, 0.3));
+    box-shadow: 
+        0 0 30px rgba(255, 0, 255, 0.3),
+        inset 0 0 15px rgba(255, 0, 255, 0.2);
+}
+
+/* Support button specific styling */
+.cta-card.support .cta-button {
+    background: linear-gradient(135deg, 
+        rgba(153, 51, 255, 0.3),
+        rgba(0, 255, 255, 0.2));
+    box-shadow: 
+        0 0 20px rgba(153, 51, 255, 0.2),
+        inset 0 0 10px rgba(153, 51, 255, 0.1);
+}
+
+.cta-card.support .cta-button:hover {
+    background: linear-gradient(135deg, 
+        rgba(153, 51, 255, 0.4),
+        rgba(0, 255, 255, 0.3));
+    box-shadow: 
+        0 0 30px rgba(153, 51, 255, 0.3),
+        inset 0 0 15px rgba(153, 51, 255, 0.2);
+}
+
+@keyframes buttonPulse {
+    0% {
+        box-shadow: 
+            0 0 20px rgba(255, 255, 255, 0.1),
+            0 0 40px rgba(255, 255, 255, 0.05),
+            inset 0 0 10px rgba(255, 255, 255, 0.1);
+    }
+    50% {
+        box-shadow: 
+            0 0 25px rgba(255, 255, 255, 0.15),
+            0 0 50px rgba(255, 255, 255, 0.1),
+            inset 0 0 15px rgba(255, 255, 255, 0.15);
+    }
+    100% {
+        box-shadow: 
+            0 0 20px rgba(255, 255, 255, 0.1),
+            0 0 40px rgba(255, 255, 255, 0.05),
+            inset 0 0 10px rgba(255, 255, 255, 0.1);
+    }
+}
+
+/* Header and Navigation */
+header {
+    background: linear-gradient(90deg, var(--gradient-start), var(--gradient-middle));
+    padding: 1rem;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+}
+
+header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('icon/header_pattern.png') repeat;
+    background-size: 100px 100px;
+    opacity: 0.1;
+    z-index: -1;
+    animation: patternMove 20s linear infinite;
+}
+
+@keyframes patternMove {
+    from { background-position: 0 0; }
+    to { background-position: 100px 100px; }
+}
+
+.main-nav {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    position: relative;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05);
+}
+
+.logo-img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 10px rgba(255, 0, 255, 0.3));
+}
+
+.logo-text {
+    height: 24px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 10px rgba(255, 0, 255, 0.2));
+}
+
+.nav-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    background: var(--nav-button-bg);
+    position: relative;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    left: 10px;
+    right: 10px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gradient-start), var(--gradient-middle));
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.nav-links a:hover::after {
+    transform: scaleX(1);
+}
+
+.nav-links a.active {
+    background: var(--nav-button-active);
+    color: var(--nav-text-active);
+    font-weight: 600;
+}
+
+.nav-links a.active::after {
+    transform: scaleX(1);
+    background: var(--nav-text-active);
+}
+
+/* Main Content */
+main {
+    margin-top: 72px; /* Adjust based on header height */
+    padding: 2rem;
+    background: rgb(30, 0, 60);
+    min-height: calc(100vh - 72px);
+    color: white;
+}
+
+/* Hero Section */
+.hero {
+    position: relative;
+    text-align: center;
+    height: 60vh;
+    background: url('icon/main_thumb.jpg') no-repeat center center;
+    background-size: cover;
+    color: white;
+    margin: -2rem -2rem -4rem -2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+        rgba(30, 0, 60, 0.8) 0%,
+        rgba(50, 0, 100, 0.6) 50%,
+        rgba(255, 0, 255, 0.4) 100%);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 2rem;
+}
+
+.hero h1 {
+    font-family: "Futura", Sans-serif;
+    font-size: clamp(64px, 12vw, 80px);
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 1.1;
+    text-shadow: 
+        -3px -1px 1px #FE0065,
+        0 0 20px rgba(254, 0, 101, 0.5);
+    color: var(--text-white);
+    margin-bottom: clamp(1rem, 3vw, 1.5rem);
+    margin-top: clamp(1rem, 3vw, 2rem);
+    letter-spacing: -0.02em;
+    transform: translateY(20px);
+    opacity: 0;
+    animation: slideUp 1s ease forwards;
+}
+
+.hero-description {
+    font-size: clamp(1rem, 2vw, 1.1rem);
+    margin-bottom: clamp(1.5rem, 3vw, 2rem);
+    max-width: min(700px, 90%);
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    font-weight: 300;
+    transform: translateY(20px);
+    opacity: 0;
+    animation: slideUp 1s ease forwards 0.3s;
+    padding: 0 1rem;
+}
+
+.cta-container {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    width: 100%;
+}
+
+.cta-section {
+    display: flex;
+    flex-direction: column;
+    margin: 0 -2rem;
+    gap: 2rem;
+}
+
+.cta-card {
+    padding: 3rem 2rem;
+    color: white;
+    width: 100%;
+    clip-path: polygon(0 0, calc(100% - 40px) 0, 100% 40px, 100% 100%, 40px 100%, 0 calc(100% - 40px));
+    position: relative;
+}
+
+.cta-card.bizdev {
+    background: var(--gradient-middle);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto auto;
+    grid-template-areas: 
+        "title button"
+        "text text"
+        "brands brands";
+    gap: 1rem;
+    clip-path: polygon(0 40px, 100% 0, 100% calc(100% - 40px), 0 100%);
+    padding: 4rem 2rem;
+}
+
+.cta-card.bizdev h2 {
+    grid-area: title;
+    text-align: left;
+    margin: 0;
+    font-family: "Futura", Sans-serif;
+    font-weight: 900;
+    font-size: 3rem;
+    line-height: 1.1;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: -0.02em;
+}
+
+.cta-card.bizdev p {
+    grid-area: text;
+    text-align: left;
+    margin: 0;
+    font-weight: 300;
+    font-size: 1.4rem;
+    line-height: 1.5;
+    opacity: 0.9;
+    margin-top: 0.5rem;
+}
+
+.cta-card.bizdev .cta-button {
+    grid-area: button;
+    justify-self: end;
+    align-self: start;
+    width: 200px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    margin-top: 1rem;
+}
+
+.cta-card.bizdev .cta-button:hover {
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.brands-slider {
+    grid-area: brands;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.brands-container {
+    display: flex;
+    gap: 2rem;
+    position: relative;
+    animation: scrollBrands 30s linear infinite;
+}
+
+.brand-frame {
+    flex: 0 0 auto;
+    width: 156px;
+    aspect-ratio: 1.833;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    padding: 1rem;
+    animation: fadeIn 0.5s ease forwards;
+    opacity: 0;
+}
+
+.brand-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.brand-frame:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-5px);
+}
+
+.brand-frame:hover img {
+    opacity: 1;
+}
+
+.brand-frame:nth-child(n) { animation-delay: calc(n * 0.1s); }
+
+@keyframes scrollBrands {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-156px * 6 - 2rem * 6)); }
+}
+
+.cta-card.merch {
+    background: #FF00FF;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    align-items: center;
+    gap: 2rem;
+    clip-path: polygon(0 40px, 100% 0, 100% calc(100% - 40px), 0 100%);
+    position: relative;
+    z-index: 1;
+}
+
+.merch-slider {
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+}
+
+.merch-items {
+    display: flex;
+    gap: 1.5rem;
+    position: relative;
+    z-index: 2;
+    animation: scrollMerch 30s linear infinite;
+}
+
+.merch-item {
+    flex: 0 0 auto;
+    width: 150px;
+    height: 150px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    position: relative;
+    cursor: pointer;
+    z-index: 2;
+    transition: all 0.3s ease;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    animation: fadeIn 0.5s ease forwards;
+    opacity: 0;
+}
+
+.merch-item:hover {
+    z-index: 20;
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.merch-tooltip {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    white-space: normal;
+    width: max-content;
+    max-width: 200px;
+    text-align: center;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1000;
+    display: none;
+}
+
+.merch-item:hover .merch-tooltip {
+    opacity: 1;
+    display: block;
+}
+
+.merch-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.9) transparent transparent transparent;
+}
+
+.merch-content {
+    text-align: right;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.merch-content .cta-button {
+    width: 200px;
+    text-align: center;
+}
+
+.merch-content h2 {
+    font-family: "Futura", Sans-serif;
+    font-weight: 800;
+    font-size: 2.8rem;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.merch-content p {
+    font-weight: 300;
+    font-size: 1.3rem;
+    line-height: 1.5;
+    opacity: 0.9;
+    margin-bottom: 1.5rem;
+}
+
+.cta-card.support {
+    background: #9933FF;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 2rem;
+    clip-path: polygon(0 40px, 100% 0, 100% calc(100% - 40px), 0 100%);
+}
+
+.support-content {
+    text-align: left;
+}
+
+.cta-card.support .cta-button {
+    width: 200px;
+    text-align: center;
+}
+
+@keyframes scrollMerch {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-150px * 6 - 1.5rem * 5)); }
+}
+
+.cta-card h2 {
+    color: white;
+    margin-bottom: 1rem;
+    font-size: 2.5rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cta-card p {
+    margin-bottom: 1.5rem;
+    opacity: 0.9;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.2rem;
+}
+
+/* Stats Section */
+.stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin: 3rem 2rem;
+    /* max-width: 1200px; */
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 
+        0 4px 6px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(255, 0, 255, 0.1);
+    clip-path: polygon(0 0, calc(100% - 40px) 0, 100% 40px, 100% 100%, 40px 100%, 0 calc(100% - 40px));
+    width: 380px;
+    height: 209px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+        rgba(255, 0, 255, 0.1),
+        rgba(108, 0, 255, 0.1));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.stat-card:hover::before {
+    opacity: 1;
+}
+
+.stat-number {
+    font-size: 7.5rem;
+    font-weight: bold;
+    background: linear-gradient(135deg, 
+        var(--gradient-start),
+        var(--gradient-middle),
+        var(--gradient-end));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+    line-height: 1;
+    text-shadow: 0 0 30px rgba(255, 0, 255, 0.3);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: countUp 2s ease forwards;
+}
+
+.stat-card p {
+    font-size: 1.8rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideUp 1s ease forwards;
+    white-space: nowrap;
+}
+
+/* Featured Games */
+.featured-games {
+    margin-bottom: 3rem;
+}
+
+.games-slider-container {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.slider-control {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    width: 80px;
+    height: 80px;
+    cursor: pointer;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 2;
+    backdrop-filter: blur(5px);
+    top: 50%;
+    transform: translateY(-50%);
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+}
+
+.slider-control.prev {
+    left: 1rem;
+}
+
+.slider-control.next {
+    right: 1rem;
+}
+
+.slider-control:hover {
+    background: rgba(0, 0, 0, 0.8);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.games-slider {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 1rem 80px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    width: 100%;
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: nowrap;
+    scroll-behavior: smooth;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.games-slider:active {
+    cursor: grabbing;
+}
+
+.games-slider::-webkit-scrollbar {
+    display: none;
+}
+
+.game-card {
+    flex: 0 0 auto;
+    width: 270px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.game-card img {
+    width: 100%;
+    height: 270px;
+    object-fit: cover;
+    margin: 0;
+}
+
+.game-card h3 {
+    white-space: normal;
+    margin: 0.75rem 1rem;
+    font-size: 1.1rem;
+    color: white;
+}
+
+.game-card .game-stats {
+    display: flex;
+    justify-content: space-between;
+    margin: 0.5rem 1rem;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.game-card .cta-button {
+    margin: 0.75rem 1rem 1rem;
+}
+
+/* Portfolio Section */
+.portfolio {
+    margin-bottom: 3rem;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-middle), var(--gradient-end));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.section-subtitle {
+    text-align: center;
+    font-size: 1.8rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 2rem;
+}
+
+/* Footer */
+footer {
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-middle), var(--gradient-end));
+    color: white;
+    padding: 3rem 1rem 1rem;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.footer-section h3 {
+    margin-bottom: 1rem;
+}
+
+.footer-section a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 0.5rem;
+    opacity: 0.8;
+}
+
+.footer-section a:hover {
+    opacity: 1;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .main-nav {
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .mobile-menu-btn {
+        display: flex !important;
+        order: 3;
+    }
+
+    .current-page {
+        display: none !important;
+    }
+
+    .nav-links {
+        display: none;
+        order: 4;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: linear-gradient(135deg, var(--gradient-start), var(--gradient-middle));
+        padding: 0;
+        gap: 0;
+        transform: translateY(-100%);
+        opacity: 0;
+        transition: all 0.3s ease-in-out;
+        pointer-events: none;
+    }
+
+    .nav-links.active {
+        display: flex;
+        flex-direction: column;
+        transform: translateY(0);
+        opacity: 1;
+        padding: 1rem;
+        gap: 1rem;
+        pointer-events: all;
+    }
+
+    .nav-links a {
+        opacity: 0;
+        transform: translateY(-20px);
+        transition: all 0.3s ease-in-out;
+    }
+
+    .nav-links.active a {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .nav-links.active a:nth-child(1) { transition-delay: 0.1s; }
+    .nav-links.active a:nth-child(2) { transition-delay: 0.2s; }
+    .nav-links.active a:nth-child(3) { transition-delay: 0.3s; }
+    .nav-links.active a:nth-child(4) { transition-delay: 0.4s; }
+
+    .games-slider {
+        padding: 1rem 80px;
+    }
+
+    .games-slider-container {
+        margin: 0 -2rem;
+        max-width: none;
+        width: auto;
+    }
+
+    .logo {
+        order: 1;
+    }
+
+    .hero h1 {
+        font-size: 50pt;
+        margin-bottom: 1rem;
+        margin-top: 1rem;
+    }
+
+    .hero-description {
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+        padding: 0 1rem;
+    }
+
+    .stat-card {
+        width: 100%;
+        max-width: 380px;
+        height: 180px;
+    }
+
+    .stat-number {
+        font-size: 5rem;
+    }
+
+    .stat-card p {
+        font-size: 1.5rem;
+    }
+
+    .cta-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .cta-card {
+        padding: 4rem 1.5rem;
+    }
+
+    .cta-card h2 {
+        font-size: 2rem;
+    }
+
+    .cta-card p {
+        font-size: 1.5rem;
+    }
+
+    .cta-section {
+        grid-template-columns: 1fr;
+    }
+
+    .cta-card.merch {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "title"
+            "description"
+            "slider"
+            "button";
+        gap: 2rem;
+        padding: 3rem 2rem;
+    }
+
+    .merch-content {
+        display: contents;
+    }
+
+    .merch-content h2 {
+        grid-area: title;
+        text-align: center;
+        font-size: 2.5rem;
+        margin-bottom: 0;
+    }
+
+    .merch-content p {
+        grid-area: description;
+        text-align: center;
+        font-size: 1.2rem;
+        margin: 0 auto;
+        max-width: 500px;
+    }
+
+    .merch-slider {
+        grid-area: slider;
+        margin: 0 -1rem;
+        padding: 0 1rem;
+    }
+
+    .merch-content .cta-button {
+        grid-area: button;
+        width: 100%;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .cta-card.support {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .support-content {
+        text-align: center;
+    }
+
+    .cta-card.support .cta-button,
+    .cta-card.bizdev .cta-button,
+    .merch-content .cta-button {
+        width: 100%;
+        text-align: center;
+        justify-self: center;
+    }
+
+    .cta-card.bizdev {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto auto;
+        grid-template-areas: 
+            "title"
+            "text"
+            "brands"
+            "button";
+        text-align: center;
+    }
+
+    .cta-card.bizdev h2,
+    .cta-card.bizdev p {
+        text-align: center;
+    }
+
+    .cta-card.bizdev .cta-button {
+        width: 100%;
+        justify-self: center;
+    }
+
+    .merch-tooltip {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+    }
+}
+
+@media (min-width: 769px) {
+    .mobile-menu-btn, .current-page {
+        display: none !important;
+    }
+
+    .nav-links {
+        display: flex;
+        transform: none;
+        opacity: 1;
+        pointer-events: all;
+    }
+}
+
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.mobile-menu-btn .hamburger {
+    width: 24px;
+    height: 18px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.mobile-menu-btn .hamburger span {
+    display: block;
+    height: 2px;
+    width: 100%;
+    background: white;
+    transition: all 0.3s ease;
+}
+
+.mobile-menu-btn.active .hamburger span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.mobile-menu-btn.active .hamburger span:nth-child(2) {
+    opacity: 0;
+}
+
+.mobile-menu-btn.active .hamburger span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+.current-page {
+    display: none;
+    color: white;
+    font-weight: 500;
+}
+
+/* Add fade-in animation for elements */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.brand-frame, .merch-item {
+    animation: fadeIn 0.5s ease forwards;
+    opacity: 0;
+}
+
+.brand-frame:nth-child(n) { animation-delay: calc(n * 0.1s); }
+.merch-item:nth-child(n) { animation-delay: calc(n * 0.1s); }
+
+/* Animations */
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes countUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+} 
