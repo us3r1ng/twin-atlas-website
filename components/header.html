@@ -19,4 +19,74 @@
             <a href="careers.html">Careers</a>
         </div>
     </nav>
+    <script>
+        function initializeHeader() {
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const navLinks = document.querySelector('.nav-links');
+            const currentPage = document.querySelector('.current-page');
+            
+            // Mobile menu toggle
+            if (mobileMenuBtn && navLinks) {
+                mobileMenuBtn.addEventListener('click', () => {
+                    mobileMenuBtn.classList.toggle('active');
+                    navLinks.classList.toggle('active');
+                });
+            }
+
+            // Get current page from URL
+            const path = window.location.pathname;
+            const basePath = getBasePath();
+            const relativePath = path.includes(basePath) ? path.substring(path.indexOf(basePath) + basePath.length) : path;
+            const currentFile = relativePath.includes('index.html') || relativePath === '/' || relativePath === '' ? 'index.html' : relativePath.split('/').pop();
+
+            // Update navigation state
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                // Skip external links
+                if (link.target === '_blank') return;
+
+                const href = link.getAttribute('href');
+                
+                // Check if this link matches current page
+                if (href === currentFile) {
+                    link.classList.add('active');
+                    if (currentPage) {
+                        currentPage.textContent = link.textContent;
+                    }
+                }
+
+                // Update href to include base path
+                if (!link.target) {
+                    link.href = getAssetPath(href);
+                }
+
+                // Handle click events
+                link.addEventListener('click', () => {
+                    if (link.target === '_blank') return;
+                    
+                    // Update active states
+                    document.querySelectorAll('.nav-links a').forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                    
+                    // Update current page text
+                    if (currentPage) {
+                        currentPage.textContent = link.textContent;
+                    }
+                    
+                    // Close mobile menu
+                    if (mobileMenuBtn && navLinks) {
+                        mobileMenuBtn.classList.remove('active');
+                        navLinks.classList.remove('active');
+                    }
+                });
+            });
+
+            // Update logo image paths
+            document.querySelectorAll('.logo img').forEach(img => {
+                img.src = getAssetPath(img.getAttribute('src'));
+            });
+        }
+
+        // Run initialization immediately
+        initializeHeader();
+    </script>
 </header> 
