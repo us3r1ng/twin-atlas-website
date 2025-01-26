@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 async function initializeApp() {
     try {
         // Load game data
-        const response = await fetch('./game_data.json');
+        const response = await fetch('game_data.json');
         const gameData = await response.json();
 
         // Populate games grid

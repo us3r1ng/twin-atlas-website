@@ -23,12 +23,12 @@ async function initializeApp() {
     // Load game data
     try {
         // First load the original game_data.json to get total game count
-        const originalResponse = await fetch('./game_data.json');
+        const originalResponse = await fetch('game_data.json');
         const originalGameData = await originalResponse.json();
         const totalGames = originalGameData.length;
 
         // Then load the updated game data for everything else
-        const response = await fetch('./updated_game_data.json');
+        const response = await fetch('updated_game_data.json');
         const gameData = await response.json();
         
         console.log(gameData);
@@ -504,54 +504,6 @@ async function initializeApp() {
         }
     }
 
-    // Function to generate merch items
-    async function initializeMerchSlider() {
-        try {
-            const response = await fetch('./merch_data.json');
-            const merchData = await response.json();
-            const merchContainer = document.querySelector('.merch-items');
-            
-            // Function to create a single set of merch items
-            const createMerchSet = () => {
-                const fragment = document.createDocumentFragment();
-                merchData.forEach(item => {
-                    const merchItem = document.createElement('div');
-                    merchItem.className = 'merch-item';
-                    const img = document.createElement('img');
-                    img.src = item.image_url;
-                    img.alt = item.title;
-                    img.draggable = false;
-                    merchItem.appendChild(img);
-                    fragment.appendChild(merchItem);
-                });
-                return fragment;
-            };
-
-            // Create three sets for seamless scrolling
-            merchContainer.appendChild(createMerchSet());
-            merchContainer.appendChild(createMerchSet());
-            merchContainer.appendChild(createMerchSet());
-
-            // Start automatic scrolling
-            let scrollPosition = 0;
-            const scrollSpeed = 1;
-            
-            function scrollMerch() {
-                scrollPosition += scrollSpeed;
-                if (scrollPosition >= merchContainer.scrollWidth / 3) {
-                    scrollPosition = 0;
-                }
-                merchContainer.scrollLeft = scrollPosition;
-                requestAnimationFrame(scrollMerch);
-            }
-            
-            scrollMerch();
-        } catch (error) {
-            console.error('Error loading merch data:', error);
-        }
-    }
-
     // Initialize both sliders
     await initializeBrandsSlider();
-    await initializeMerchSlider();
 } 

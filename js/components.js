@@ -4,22 +4,18 @@ async function loadComponent(elementId, componentPath) {
         const response = await fetch(componentPath);
         const html = await response.text();
         document.getElementById(elementId).innerHTML = html;
-
-        // If this is the header, initialize its JavaScript
-        if (elementId === 'header') {
-            initializeHeader();
-        }
     } catch (error) {
         console.error(`Error loading component ${componentPath}:`, error);
     }
 }
 
-// Header specific initialization
+// Header initialization
 function initializeHeader() {
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
     const navLinks = document.querySelector('.nav-links');
     const currentPage = document.querySelector('.current-page');
     
+    // Mobile menu toggle
     if (mobileMenuBtn && navLinks) {
         mobileMenuBtn.addEventListener('click', () => {
             mobileMenuBtn.classList.toggle('active');
@@ -27,27 +23,42 @@ function initializeHeader() {
         });
     }
 
-    // Set current page in header
-    if (currentPage) {
-        const pageName = document.title.split('-')[0].trim();
-        currentPage.textContent = pageName;
-    }
+    // Get current page from URL
+    const path = window.location.pathname;
+    const currentFile = path.includes('index.html') || path === '/' || path === '' ? 'index.html' : path.split('/').pop();
 
-    // Update active state in navigation
-    const currentPath = window.location.pathname;
+    console.log('Current file:', currentFile, 'Path:', path);
+    
+    // Update navigation state
     document.querySelectorAll('.nav-links a').forEach(link => {
-        if (link.getAttribute('href') === currentPath) {
-            link.classList.add('active');
-        }
+        // Skip external links
+        if (link.target === '_blank') return;
+
+        const href = link.getAttribute('href');
+        console.log('Checking link:', href);
         
-        link.addEventListener('click', () => {
-            document.querySelectorAll('.nav-links a').forEach(l => l.classList.remove('active'));
+        // Check if this link matches current page
+        if (href === currentFile) {
             link.classList.add('active');
             if (currentPage) {
                 currentPage.textContent = link.textContent;
             }
+        }
+
+        // Handle click events
+        link.addEventListener('click', () => {
+            if (link.target === '_blank') return;
             
-            // Close mobile menu when link is clicked
+            // Update active states
+            document.querySelectorAll('.nav-links a').forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+            
+            // Update current page text
+            if (currentPage) {
+                currentPage.textContent = link.textContent;
+            }
+            
+            // Close mobile menu
             if (mobileMenuBtn && navLinks) {
                 mobileMenuBtn.classList.remove('active');
                 navLinks.classList.remove('active');
@@ -57,7 +68,16 @@ function initializeHeader() {
 }
 
 // Load components when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    loadComponent('header', '/components/header.html');
-    loadComponent('footer', '/components/footer.html');
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        // Load header
+        await loadComponent('header', 'components/header.html');
+        // Initialize header after loading
+        initializeHeader();
+
+        // Load footer
+        await loadComponent('footer', 'components/footer.html');
+    } catch (error) {
+        console.error('Error loading components:', error);
+    }
 }); 
