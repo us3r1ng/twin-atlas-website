@@ -17,18 +17,23 @@ async function initializeApp() {
     let stats = {
         experienceCount: { target: 0, current: 0 },
         likeRatio: { target: 0, current: 0, suffix: '%' },
-        communitySize: { target: 2000000000, current: 0, format: true }
+        communitySize: { target: 0, current: 0, format: true }
     };
 
-    // Load game data
+    // Load game data and studio data
     try {
+        // Load studio data first
+        const studioResponse = await fetch('data/studio_data.json');
+        const studioData = await studioResponse.json();
+        stats.communitySize.target = studioData.communitySize;
+
         // First load the original game_data.json to get total game count
-        const originalResponse = await fetch('game_data.json');
+        const originalResponse = await fetch('data/game_data.json');
         const originalGameData = await originalResponse.json();
         const totalGames = originalGameData.length;
 
         // Then load the updated game data for everything else
-        const response = await fetch('updated_game_data.json');
+        const response = await fetch('data/updated_game_data.json');
         const gameData = await response.json();
         
         console.log(gameData);
@@ -65,14 +70,76 @@ async function initializeApp() {
         stats.experienceCount.target = totalGames;
         stats.likeRatio.target = averageRating;
 
-        // Sort games by visits
-        const sortedGames = [...gameData].sort((a, b) => b.visits - a.visits);
+        // Create an Intersection Observer for stats
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Animate stats when they come into view
+                    const experienceCount = document.getElementById('experienceCount');
+                    const likeRatio = document.getElementById('likeRatio');
+                    const communitySize = document.getElementById('communitySize');
+
+                    // Animate experience count
+                    let currentExp = 0;
+                    const animateExp = setInterval(() => {
+                        currentExp++;
+                        if (currentExp >= totalGames) {
+                            clearInterval(animateExp);
+                            experienceCount.textContent = `${totalGames}+`;
+                        } else {
+                            experienceCount.textContent = currentExp;
+                        }
+                    }, 2000 / totalGames);
+
+                    // Animate like ratio
+                    let currentRatio = 0;
+                    const animateRatio = setInterval(() => {
+                        currentRatio++;
+                        if (currentRatio >= averageRating) {
+                            clearInterval(animateRatio);
+                            likeRatio.textContent = `${averageRating}%`;
+                        } else {
+                            likeRatio.textContent = `${currentRatio}%`;
+                        }
+                    }, 2000 / averageRating);
+
+                    // Animate community size
+                    let currentCommunity = 0;
+                    const targetCommunity = stats.communitySize.target;
+                    const communitySizeSteps = 100;
+                    const communityIncrement = targetCommunity / communitySizeSteps;
+                    const animateCommunity = setInterval(() => {
+                        currentCommunity += communityIncrement;
+                        if (currentCommunity >= targetCommunity) {
+                            clearInterval(animateCommunity);
+                            communitySize.textContent = formatNumber(targetCommunity);
+                        } else {
+                            communitySize.textContent = formatNumber(Math.floor(currentCommunity));
+                        }
+                    }, 2000 / communitySizeSteps);
+
+                    // Stop observing after animation
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        });
+
+        // Start observing the stats section
+        const statsSection = document.querySelector('.stats');
+        if (statsSection) {
+            statsObserver.observe(statsSection);
+        }
+
+        // Sort games by visits and filter for pinned games
+        const pinnedGames = gameData.filter(game => game.pinned);
+        const sortedGames = [...pinnedGames].sort((a, b) => b.visits - a.visits);
 
         // Populate games
         const gamesSlider = document.querySelector('.games-slider');
         gamesSlider.innerHTML = ''; // Clear any existing content
         
         sortedGames.forEach(game => {
+            console.log("got game", game)
             const gameCard = document.createElement('div');
             gameCard.className = 'game-card';
             
@@ -83,11 +150,19 @@ async function initializeApp() {
                     <span>${formatNumber(game.visits)} visits</span>
                     <span>${formatNumber(game.up_votes)} likes</span>
                 </div>
-                <button class="cta-button" onclick="window.location.href='${game.link}'">Play Now</button>
+                <button class="cta-button" onclick="window.location.href='https://www.roblox.com/games/${game.place_id}'">Play Now</button>
             `;
             
             gamesSlider.appendChild(gameCard);
         });
+
+        // Add view all button after the slider
+        const viewAllContainer = document.createElement('div');
+        viewAllContainer.className = 'view-all-container';
+        viewAllContainer.innerHTML = `
+            <a href="/games.html" class="view-all-button">View All Games</a>
+        `;
+        gamesSlider.parentElement.after(viewAllContainer);
 
         // !!!! DO NOT REPLACE OR MODIFY THE CODE BELOW - SCROLL FUNCTIONALITY WORKS PERFECTLY !!!!
         // Setup slider controls
@@ -302,35 +377,6 @@ async function initializeApp() {
         updateCounter();
     }
 
-    // Create an Intersection Observer for stats
-    const statsObserverOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-    };
-
-    const statsSection = document.querySelector('.stats');
-    let hasAnimated = false;
-
-    const statsObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting && !hasAnimated) {
-                hasAnimated = true;
-                Object.entries(stats).forEach(([id, stat]) => {
-                    const element = document.getElementById(id);
-                    if (element) {
-                        animateCounter(element, stat);
-                    }
-                });
-                statsObserver.unobserve(entry.target);
-            }
-        });
-    }, statsObserverOptions);
-
-    if (statsSection) {
-        statsObserver.observe(statsSection);
-    }
-
     // Shopify Products Fetching
     async function fetchTopProducts() {
         const shopifyEndpoint = 'https://6f67a8-82.myshopify.com/api/2024-01/graphql.json';
@@ -373,7 +419,7 @@ async function initializeApp() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-Shopify-Storefront-Access-Token': 'b23e28d926aae067f2dfeec79746922e'
+                    'X-Shopify-Storefront-Access-Token': process.env.SHOPIFY_STOREFRONT_TOKEN
                 },
                 body: JSON.stringify({ query })
             });
@@ -433,7 +479,7 @@ async function initializeApp() {
                 // Create tooltip
                 const tooltip = document.createElement('div');
                 tooltip.className = 'merch-tooltip';
-                tooltip.textContent = `${node.title} - ${formatPrice(node.priceRange.minVariantPrice)}`;
+                tooltip.textContent =  node.title;
                 merchItem.appendChild(tooltip);
 
                 // Handle click/tap to open product
@@ -460,7 +506,7 @@ async function initializeApp() {
     // Function to generate brand frames
     async function initializeBrandsSlider() {
         try {
-            const response = await fetch('./brand_data.json');
+            const response = await fetch('data/brand_data.json');
             const brandData = await response.json();
             const brandsContainer = document.querySelector('.brands-container');
             

@@ -28,16 +28,8 @@ function fetchData($url) {
     return $decodedData;
 }
 
-// Filter for pinned games
-$pinnedGames = array_filter($games, function($game) {
-    return isset($game['pinned']) && $game['pinned'] === true;
-});
-
-if (empty($pinnedGames)) {
-    die('Error: No pinned games found.');
-}
-
-$universeIds = array_column($pinnedGames, 'universe_id');
+// Get all universe IDs
+$universeIds = array_filter(array_column($games, 'universe_id'));
 $universeIdList = implode(',', $universeIds);
 
 // Fetch visit and vote data
@@ -65,24 +57,26 @@ foreach ($voteData['data'] as $item) {
     $downVotesIndexed[$item['id']] = $item['downVotes'];
 }
 
-// Add visits and votes to games array
+// Add visits and votes to all games
 $outputGames = [];
-foreach ($pinnedGames as $game) {
+foreach ($games as $game) {
     $universeId = $game['universe_id'] ?? null;
     $visits = $universeId && isset($visitsIndexed[$universeId]) ? $visitsIndexed[$universeId] : 0;
     $likeRatio = $universeId && isset($votesIndexed[$universeId]) ? $votesIndexed[$universeId] : 0;
     $upVotes = $universeId && isset($upVotesIndexed[$universeId]) ? $upVotesIndexed[$universeId] : 0;
     $downVotes = $universeId && isset($downVotesIndexed[$universeId]) ? $downVotesIndexed[$universeId] : 0;
-    $placeLink = "https://www.roblox.com/games/" . $game['place_id'];
+    $placeId = $game['place_id'] ?? null;
 
     $outputGames[] = [
         'title' => $game['title'],
-        'link' => $placeLink,
+        'place_id' => $placeId,
         'visits' => $visits,
         'like_ratio' => $likeRatio,
         'up_votes' => $upVotes,
         'down_votes' => $downVotes,
-        'image_url' => $game['image_url']
+        'image_url' => $game['image_url'],
+        'pinned' => $game['pinned'],
+        'category' => $game['category'] ?? 'original'
     ];
 }
 
@@ -94,6 +88,6 @@ usort($outputGames, function($a, $b) {
 // Output the updated game data to a JSON file
 file_put_contents('updated_game_data.json', json_encode($outputGames, JSON_PRETTY_PRINT));
 
-echo "Pinned game stats updated successfully.\n";
+echo "Game stats updated successfully.\n";
 
 ?>

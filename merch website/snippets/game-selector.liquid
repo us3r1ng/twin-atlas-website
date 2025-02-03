@@ -1,0 +1,309 @@
+{% comment %}
+  Game Selector Snippet
+  Parameters:
+  - title: string (Section title)
+  - games: array (Game blocks from section)
+  - show_all: boolean (Whether to show All Games option)
+  - target_grid_id: string (ID of the product grid to update)
+  - current_collection: string (Handle of the current collection)
+{% endcomment %}
+
+<div class="collection-header page-width">
+  <h1>{{ title }}</h1>
+  <div class="collection-selector" 
+       data-target-grid="{{ target_grid_id }}"
+       data-current-collection="{{ current_collection }}">
+    <div class="selector-buttons">
+      {% if show_all %}
+        <button type="button" 
+                class="selector-button {% if request.query_string == blank %}active{% endif %}"
+                data-game-tag=""
+                data-collection-handle="{{ current_collection }}">
+          <span class="selector-button__content">
+            All Games
+          </span>
+        </button>
+      {% endif %}
+
+      {% for game in games %}
+        {% if game.settings.collection != blank %}
+          <button type="button" 
+                  class="selector-button {% if request.query_string contains game.settings.title %}active{% endif %}"
+                  data-game-tag="{{ game.settings.title }}"
+                  data-collection-handle="{{ current_collection }}">
+            <span class="selector-button__content">
+              {% if game.settings.icon %}
+                <img src="{{ game.settings.icon | img_url: '24x' }}" 
+                     alt=""
+                     class="selector-button__icon"
+                     width="24"
+                     height="24"
+                     loading="lazy">
+              {% endif %}
+              {{ game.settings.title }}
+            </span>
+          </button>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<style>
+  .collection-header {
+    padding: 2rem 0;
+    text-align: center;
+  }
+
+  .collection-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    font-weight: 700;
+    color: white;
+  }
+
+  .collection-selector {
+    margin-bottom: 2rem;
+  }
+
+  .selector-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .selector-button {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    background: rgba(255, 255, 255, 0.2);
+    position: relative;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  }
+
+  .selector-button:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  .selector-button.active {
+    background: #FFFFFF;
+    color: #6C00FF;
+    font-weight: 600;
+  }
+
+  .selector-button__content {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .selector-button__icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+  }
+
+  @media (max-width: 768px) {
+    .selector-buttons {
+      flex-direction: column;
+      padding: 0 1rem;
+    }
+  }
+
+  .loading {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+</style>
+
+<script>
+  // Keep track of initialized selectors
+  window.initializedSelectors = window.initializedSelectors || new Set();
+
+
+  function toKebabCase(str) {
+    return str
+      .toLowerCase()        // Convert to lowercase
+      .replace(/\s+/g, '-') // Replace spaces with dashes
+      .replace(/[^a-z0-9-]/g, ''); // Remove special characters (optional)
+  }
+  
+  class CollectionSelector {
+    constructor(element) {
+      // Check if this element is already initialized
+      if (window.initializedSelectors.has(element)) {
+        return;
+      }
+      
+      this.element = element;
+      this.buttons = element.querySelectorAll('.selector-button');
+      this.targetGridId = element.dataset.targetGrid;
+      this.currentCollection = element.dataset.currentCollection;
+      this.productGrid = document.getElementById(this.targetGridId);
+      
+      // Mark as initialized
+      window.initializedSelectors.add(element);
+      
+      this.init();
+      this.initFromUrl();
+    }
+
+    init() {
+      this.buttons.forEach(button => {
+        button.addEventListener('click', () => this.handleGameChange(toKebabCase(button.dataset.gameTag)));
+      });
+
+      // Listen for back/forward browser navigation
+      window.addEventListener('popstate', (event) => {
+        this.initFromUrl();
+      });
+    }
+
+    initFromUrl() {
+      // const urlParams = new URLSearchParams(window.location.search);
+      // const gameTag = urlParams.get('filter.p.tag');
+      //console.log("Loaded from url with game tag: " + gameTag)
+
+      const pathSegments = window.location.pathname.split('/').filter(segment => segment); // Remove empty segments
+      const lastSegment = pathSegments[pathSegments.length - 1]; // Get the last segment
+      const gameTag = lastSegment;
+      this.handleGameChange(gameTag)
+
+     // console.log("Got last segment: " + lastSegment)
+      
+      // Update active state based on URL
+      // this.buttons.forEach(button => {
+      //   const buttonTag = button.dataset.gameTag;
+      //   const kebabTag = toKebabCase(buttonTag)
+      //   console.log("Check against button of tag: " + kebabTag + " gameTag: " + buttonTag)
+      //   button.classList.toggle('active', 
+      //     buttonTag === '' && kebabTag == "" || 
+      //     buttonTag && kebabTag === buttonTag
+      //   );
+      // });
+    }
+
+    async handleGameChange(gameTag) {
+      const collectionHandle = this.currentCollection;
+
+      this.buttons.forEach(button => {
+        const kebabTag = toKebabCase(button.dataset.gameTag)
+        button.classList.toggle("active", ((kebabTag == "" && gameTag == collectionHandle) || (gameTag == kebabTag)))
+      });
+
+      // Add loading state
+      if (this.productGrid) {
+        this.productGrid.classList.add('loading');
+      }
+
+      try {
+        
+        // Get current URL parameters
+        const currentParams = new URLSearchParams(window.location.search);
+        const newParams = new URLSearchParams();
+        
+        // Preserve all existing parameters except tag filters
+        currentParams.forEach((value, key) => {
+          if (!key.startsWith('filter.p.tag') && key !== 'section_id') {
+            newParams.append(key, value);
+          }
+        });
+
+        // Add game tag if we're not showing all games
+        // if (gameTag) {
+        //   newParams.append('filter.p.tag', `${gameTag}`);
+        // }
+
+        // Construct base URL using current collection
+        var baseUrl = `/collections/${collectionHandle}`;
+
+        const kebabGame = toKebabCase(gameTag)
+        console.log("adding game tag " + gameTag + " " + kebabGame)
+        if (gameTag) {
+          baseUrl = baseUrl + "/" + kebabGame;
+        }
+        console.log("got url: " + baseUrl)
+        
+        // Create display URL (for browser history) and fetch URL (for AJAX request)
+        const displayUrl = `${baseUrl}${newParams.toString() ? `?${newParams.toString()}` : ''}`;
+        newParams.append('section_id', 'game-collection-grid');
+        const fetchUrl = `${baseUrl}?${newParams.toString()}`;
+
+        console.log("Output fetch URL: " + fetchUrl)
+
+        // Fetch filtered collection content
+        const response = await fetch(fetchUrl);
+        if (!response.ok) throw new Error('Failed to fetch products');
+        
+        // const html = await response.text();
+
+        // // Update the product grid content
+        // if (this.productGrid) {
+        //   const productsGrid = this.productGrid.querySelector('.products-grid');
+        //   console.log(productsGrid)
+        //   if (productsGrid) {
+        //     productsGrid.outerHTML = html;
+        //   }
+        // }
+
+        const html = await response.text(); // Fetch the HTML response
+        console.log(html)
+        
+        // Create a temporary DOM parser
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        
+        // Find the #game-collection-grid element in the fetched HTML
+        const newGameCollectionGrid = doc.querySelector('#selector-swap');
+        
+        if (newGameCollectionGrid) {
+            const currentGameCollectionGrid = document.querySelector('#selector-swap')
+        
+            if (currentGameCollectionGrid) {
+                currentGameCollectionGrid.innerHTML = newGameCollectionGrid.innerHTML; // Replace all contents
+            }
+        }
+       
+
+        // Update URL without page reload
+        window.history.pushState({ path: displayUrl }, '', displayUrl);
+      } catch (error) {
+        console.error('Error updating products:', error);
+        if (this.productGrid) {
+          const productsGrid = document.querySelector('#game-collection-grid');
+          if (productsGrid) {
+            productsGrid.innerHTML = `
+              <div class="products-grid__items">
+                <div class="empty-collection">
+                  <p>Error loading products. Please try again.</p>
+                </div>
+              </div>
+            `;
+          }
+        }
+      } finally {
+        // Remove loading state
+        if (this.productGrid) {
+          this.productGrid.classList.remove('loading');
+        }
+      }
+    }
+  }
+
+  // Initialize selectors only if they haven't been initialized before
+  function initializeSelectors() {
+    document.querySelectorAll('.collection-selector').forEach(selector => {
+      if (!window.initializedSelectors.has(selector)) {
+        new CollectionSelector(selector);
+      }
+    });
+  }
+
+  // Initialize on DOMContentLoaded
+  document.addEventListener('DOMContentLoaded', initializeSelectors);
+</script> 

@@ -1,0 +1,17 @@
+{
+  "name": "Default",
+  "sections": {
+    "main": {
+      "type": "game-selector",
+      "settings": {
+        "show_all_option": true,
+        "columns_desktop": 4,
+        "columns_mobile": 2,
+        "products_per_page": 16
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+} 

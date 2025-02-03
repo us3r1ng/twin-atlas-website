@@ -77,21 +77,25 @@ body {
 }
 
 .cta-button {
-    font-family: "Futura", Sans-serif;
-    font-size: 1.1rem;
-    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60px;
+    width: calc(100% - 2rem);
+    padding: 0.75rem;
+    font-size: 1rem;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 1rem 2rem;
-    position: relative;
-    overflow: visible;
-    transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(5px);
+    letter-spacing: 0.1em;
+    color: white;
+    background: linear-gradient(135deg, #FF00FF, #6C00FF);
     border: none;
     cursor: pointer;
-    color: white;
     text-decoration: none;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+    transition: transform 0.3s ease, filter 0.3s ease;
+    position: relative;
+    z-index: 1;
+    line-height: 1;
 }
 
 /* Outer stroke effect */
@@ -104,6 +108,7 @@ body {
         rgba(255, 255, 255, 0.1));
     z-index: -2;
     clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+    transition: opacity 0.3s ease;
 }
 
 /* Inner stroke effect */
@@ -114,10 +119,23 @@ body {
     background: rgb(30, 0, 60);
     z-index: -1;
     clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+    transition: opacity 0.3s ease;
+}
+
+.cta-button:hover::before {
+    opacity: 0;
+}
+
+.cta-button:hover::after {
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.4),
+        rgba(255, 255, 255, 0.1));
+    opacity: 1;
 }
 
 .cta-button:hover {
-    transform: translateY(-2px) scale(1.02);
+    transform: scale(1.05);
+    filter: brightness(1.2);
 }
 
 /* Play Now button specific styling */
@@ -141,98 +159,300 @@ body {
 }
 
 /* Business CTA specific styling */
+.cta-card.bizdev {
+    background: var(--gradient-middle);
+    padding: 4rem 2rem;
+}
+
+.cta-card.bizdev .cta-content {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas: 
+        "title button"
+        "description button"
+        "brands brands";
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 1275px;;
+    margin: 0 auto;
+}
+
+.cta-card.bizdev h2 {
+    grid-area: title;
+    font-family: "Futura", Sans-serif;
+    font-size: clamp(48px, 8vw, 56px);
+    font-weight: 900;
+    line-height: 1.1;
+    margin: 0;
+    text-align: left;
+    letter-spacing: -0.02em;
+}
+
+.cta-card.bizdev p {
+    grid-area: description;
+    font-size: 1.4rem;
+    line-height: 1.5;
+    margin: 0;
+    text-align: left;
+}
+
+.cta-card.bizdev .brands-slider {
+    grid-area: brands;
+    margin-top: 1rem;
+}
+
 .cta-card.bizdev .cta-button {
-    background: linear-gradient(135deg, 
-        rgba(255, 255, 255, 0.3),
-        rgba(255, 255, 255, 0.15));
-    box-shadow: 
-        0 0 20px rgba(255, 255, 255, 0.15),
-        0 0 40px rgba(255, 255, 255, 0.1);
+    grid-area: button;
+    width: 200px;
+    justify-self: end;
+    align-self: start;
 }
 
 .cta-card.bizdev .cta-button:hover {
-    background: linear-gradient(135deg, 
-        rgba(255, 255, 255, 0.4),
-        rgba(255, 255, 255, 0.2));
-    box-shadow: 
-        0 0 30px rgba(255, 255, 255, 0.25),
-        0 0 60px rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
 }
 
-@keyframes playNowPulse {
-    0% {
-        box-shadow: 
-            0 0 20px rgba(255, 0, 255, 0.2),
-            0 0 40px rgba(255, 0, 255, 0.1);
-    }
-    50% {
-        box-shadow: 
-            0 0 30px rgba(255, 0, 255, 0.3),
-            0 0 60px rgba(255, 0, 255, 0.2);
-    }
-    100% {
-        box-shadow: 
-            0 0 20px rgba(255, 0, 255, 0.2),
-            0 0 40px rgba(255, 0, 255, 0.1);
-    }
+.brands-slider {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    overflow: hidden;
+    position: relative;
+    padding: 1rem 0;
+}
+
+.brands-container {
+    display: flex;
+    gap: 2rem;
+    position: relative;
+    animation: scrollBrands 30s linear infinite;
+    padding: 0 2rem;
+}
+
+.brand-frame {
+    flex: 0 0 auto;
+    width: 156px;
+    aspect-ratio: 1.833;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    padding: 1rem;
+    animation: fadeIn 0.5s ease forwards;
+    opacity: 0;
+}
+
+.brand-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.brand-frame:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-5px);
+}
+
+.brand-frame:hover img {
+    opacity: 1;
+}
+
+.brand-frame:nth-child(n) { animation-delay: calc(n * 0.1s); }
+
+@keyframes scrollBrands {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-156px * 6 - 2rem * 6)); }
 }
 
 /* Shop Now button specific styling */
-.merch-content .cta-button {
-    background: linear-gradient(135deg, 
-        rgba(255, 0, 255, 0.3),
-        rgba(108, 0, 255, 0.2));
-    box-shadow: 
-        0 0 20px rgba(255, 0, 255, 0.2),
-        inset 0 0 10px rgba(255, 0, 255, 0.1);
+.cta-card.merch {
+    background: #FF00FF;
+    padding: 4rem 2rem;
 }
 
-.merch-content .cta-button:hover {
-    background: linear-gradient(135deg, 
-        rgba(255, 0, 255, 0.4),
-        rgba(108, 0, 255, 0.3));
-    box-shadow: 
-        0 0 30px rgba(255, 0, 255, 0.3),
-        inset 0 0 15px rgba(255, 0, 255, 0.2);
+.cta-card.merch .cta-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1275px;;
+    margin: 0 auto;
+    gap: 2rem;
+    position: relative;
 }
 
-/* Support button specific styling */
-.cta-card.support .cta-button {
-    background: linear-gradient(135deg, 
-        rgba(153, 51, 255, 0.3),
-        rgba(0, 255, 255, 0.2));
-    box-shadow: 
-        0 0 20px rgba(153, 51, 255, 0.2),
-        inset 0 0 10px rgba(153, 51, 255, 0.1);
+.merch-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
 }
 
-.cta-card.support .cta-button:hover {
-    background: linear-gradient(135deg, 
-        rgba(153, 51, 255, 0.4),
-        rgba(0, 255, 255, 0.3));
-    box-shadow: 
-        0 0 30px rgba(153, 51, 255, 0.3),
-        inset 0 0 15px rgba(153, 51, 255, 0.2);
+.cta-button {
+    height: 60px;
+    width: 200px;
 }
 
-@keyframes buttonPulse {
-    0% {
-        box-shadow: 
-            0 0 20px rgba(255, 255, 255, 0.1),
-            0 0 40px rgba(255, 255, 255, 0.05),
-            inset 0 0 10px rgba(255, 255, 255, 0.1);
+.hero-cta-container>.cta-button {
+    width: 300px;
+}
+
+
+.cta-card.merch .cta-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.merch-slider {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    position: relative;
+    padding: 1rem 0;
+}
+
+.merch-items {
+    display: flex;
+    gap: 1.5rem;
+    animation: scrollMerch 30s linear infinite;
+    padding: 0 2rem;
+}
+
+@keyframes scrollMerch {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-150px * 7 - 1.5rem * 6)); }
+}
+
+.merch-item {
+    flex: 0 0 auto;
+    width: 150px;
+    height: 150px;
+    background: white;
+    border-radius: 8px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.5s ease forwards;
+    opacity: 0;
+    overflow: visible;
+}
+
+.merch-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.merch-tooltip {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(89, 0, 255, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    font-size: 1rem;
+    white-space: normal;
+    width: max-content;
+    text-align: center;
+    pointer-events: none;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    display: none;
+    box-shadow: 
+        0 8px 32px rgba(89, 0, 255, 0.3),
+        0 4px 8px rgba(0, 0, 0, 0.2),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.merch-item:hover .merch-tooltip {
+    opacity: 1;
+    display: block;
+}
+
+.merch-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: rgba(89, 0, 255, 0.4) transparent transparent transparent;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+@media (max-width: 768px) {
+    .cta-card.bizdev .cta-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
     }
-    50% {
-        box-shadow: 
-            0 0 25px rgba(255, 255, 255, 0.15),
-            0 0 50px rgba(255, 255, 255, 0.1),
-            inset 0 0 15px rgba(255, 255, 255, 0.15);
+
+    .cta-card.bizdev h2,
+    .cta-card.bizdev p {
+        text-align: center;
     }
-    100% {
-        box-shadow: 
-            0 0 20px rgba(255, 255, 255, 0.1),
-            0 0 40px rgba(255, 255, 255, 0.05),
-            inset 0 0 10px rgba(255, 255, 255, 0.1);
+
+    .brands-slider {
+        order: 2;
+        margin-bottom: 1rem;
+    }
+
+    .cta-card.bizdev .cta-button {
+        order: 3;
+        width: 100%;
+        margin: 0;
+    }
+
+    .cta-card.merch .cta-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    .merch-content {
+        width: 100%;
+        align-items: center;
+        text-align: center;
+    }
+
+    .merch-slider {
+        width: 100vw;
+        margin-left: calc(-50vw + 50%);
+        margin-right: calc(-50vw + 50%);
+        order: 2;
+    }
+
+    .cta-card.merch .cta-button {
+        position: static;
+        width: 100%;
+        order: 3;
+        margin-top: 1rem;
+    }
+
+    .merch-content {
+        order: 1;
+    }
+
+    .cta-card.bizdev h2 {
+        font-size: clamp(32px, 8vw, 40px);
+        text-align: center;
     }
 }
 
@@ -267,7 +487,7 @@ header::before {
 }
 
 .main-nav {
-    max-width: 1200px;
+    max-width: 1275px;;
     margin: 0 auto;
     display: flex;
     align-items: center;
@@ -384,7 +604,7 @@ main {
 .hero-content {
     position: relative;
     z-index: 1;
-    max-width: 1200px;
+    max-width: 1275px;;
     margin: 0 auto;
     width: 100%;
     padding: 2rem;
@@ -423,6 +643,12 @@ main {
     padding: 0 1rem;
 }
 
+.hero-cta-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
 .cta-container {
     display: flex;
     gap: 2rem;
@@ -441,274 +667,31 @@ main {
     padding: 3rem 2rem;
     color: white;
     width: 100%;
-    clip-path: polygon(0 0, calc(100% - 40px) 0, 100% 40px, 100% 100%, 40px 100%, 0 calc(100% - 40px));
+    clip-path: polygon(0 40px, 100% 0, 100% calc(100% - 40px), 0 100%);
     position: relative;
 }
 
-.cta-card.bizdev {
-    background: var(--gradient-middle);
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-template-rows: auto auto auto;
-    grid-template-areas: 
-        "title button"
-        "text text"
-        "brands brands";
-    gap: 1rem;
-    clip-path: polygon(0 40px, 100% 0, 100% calc(100% - 40px), 0 100%);
-    padding: 4rem 2rem;
-}
-
-.cta-card.bizdev h2 {
-    grid-area: title;
-    text-align: left;
-    margin: 0;
-    font-family: "Futura", Sans-serif;
-    font-weight: 900;
-    font-size: 3rem;
-    line-height: 1.1;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    letter-spacing: -0.02em;
-}
-
-.cta-card.bizdev p {
-    grid-area: text;
-    text-align: left;
-    margin: 0;
-    font-weight: 300;
-    font-size: 1.4rem;
-    line-height: 1.5;
-    opacity: 0.9;
-    margin-top: 0.5rem;
-}
-
-.cta-card.bizdev .cta-button {
-    grid-area: button;
-    justify-self: end;
-    align-self: start;
-    width: 200px;
-    text-align: center;
-    background: rgba(255, 255, 255, 0.15);
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-    margin-top: 1rem;
-}
-
-.cta-card.bizdev .cta-button:hover {
-    background: rgba(255, 255, 255, 0.25);
-    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
-}
-
-.brands-slider {
-    grid-area: brands;
+.cta-content {
     width: 100%;
-    overflow: hidden;
-    position: relative;
-}
-
-.brands-container {
-    display: flex;
-    gap: 2rem;
-    position: relative;
-    animation: scrollBrands 30s linear infinite;
-}
-
-.brand-frame {
-    flex: 0 0 auto;
-    width: 156px;
-    aspect-ratio: 1.833;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.3s ease;
-    cursor: pointer;
-    padding: 1rem;
-    animation: fadeIn 0.5s ease forwards;
-    opacity: 0;
-}
-
-.brand-frame img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    filter: brightness(0) invert(1);
-    opacity: 0.8;
-    transition: opacity 0.3s ease;
-}
-
-.brand-frame:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-5px);
-}
-
-.brand-frame:hover img {
-    opacity: 1;
-}
-
-.brand-frame:nth-child(n) { animation-delay: calc(n * 0.1s); }
-
-@keyframes scrollBrands {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(calc(-156px * 6 - 2rem * 6)); }
-}
-
-.cta-card.merch {
-    background: #FF00FF;
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    align-items: center;
-    gap: 2rem;
-    clip-path: polygon(0 40px, 100% 0, 100% calc(100% - 40px), 0 100%);
-    position: relative;
-    z-index: 1;
-}
-
-.merch-slider {
-    overflow: hidden;
-    position: relative;
-    z-index: 2;
-}
-
-.merch-items {
-    display: flex;
-    gap: 1.5rem;
-    position: relative;
-    z-index: 2;
-    animation: scrollMerch 30s linear infinite;
-}
-
-.merch-item {
-    flex: 0 0 auto;
-    width: 150px;
-    height: 150px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
-    position: relative;
-    cursor: pointer;
-    z-index: 2;
-    transition: all 0.3s ease;
-    background-size: cover;
-    background-position: center;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    animation: fadeIn 0.5s ease forwards;
-    opacity: 0;
-}
-
-.merch-item:hover {
-    z-index: 20;
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-    border-color: rgba(255, 255, 255, 0.3);
-}
-
-.merch-tooltip {
-    position: absolute;
-    bottom: calc(100% + 10px);
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.9);
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    white-space: normal;
-    width: max-content;
-    max-width: 200px;
-    text-align: center;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: 1000;
-    display: none;
-}
-
-.merch-item:hover .merch-tooltip {
-    opacity: 1;
-    display: block;
-}
-
-.merch-tooltip::after {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    border-width: 5px;
-    border-style: solid;
-    border-color: rgba(0, 0, 0, 0.9) transparent transparent transparent;
-}
-
-.merch-content {
-    text-align: right;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-}
-
-.merch-content .cta-button {
-    width: 200px;
-    text-align: center;
-}
-
-.merch-content h2 {
-    font-family: "Futura", Sans-serif;
-    font-weight: 800;
-    font-size: 2.8rem;
-    line-height: 1.1;
-    margin-bottom: 0.5rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.merch-content p {
-    font-weight: 300;
-    font-size: 1.3rem;
-    line-height: 1.5;
-    opacity: 0.9;
-    margin-bottom: 1.5rem;
-}
-
-.cta-card.support {
-    background: #9933FF;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    align-items: center;
-    gap: 2rem;
-    clip-path: polygon(0 40px, 100% 0, 100% calc(100% - 40px), 0 100%);
-}
-
-.support-content {
-    text-align: left;
-}
-
-.cta-card.support .cta-button {
-    width: 200px;
-    text-align: center;
-}
-
-@keyframes scrollMerch {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(calc(-150px * 6 - 1.5rem * 5)); }
+   max-width: 1275px;    ;
+   margin: 0 auto;
 }
 
 .cta-card h2 {
+    font-family: "Futura", Sans-serif;
+    font-size: clamp(48px, 8vw, 56px);
+    font-weight: 900;
+    line-height: 1.1;
+    margin: 0 0 0.5rem 0;
     color: white;
-    margin-bottom: 1rem;
-    font-size: 2.5rem;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
+    letter-spacing: -0.02em;
 }
 
 .cta-card p {
-    margin-bottom: 1.5rem;
+    font-size: 1.4rem;
+    line-height: 1.5;
+    margin: 0;
     opacity: 0.9;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-    font-size: 1.2rem;
 }
 
 /* Stats Section */
@@ -717,7 +700,7 @@ main {
     flex-wrap: wrap;
     gap: 2rem;
     margin: 3rem 2rem;
-    /* max-width: 1200px; */
+    /* max-width: 1275px;; */
     margin-left: auto;
     margin-right: auto;
     justify-content: center;
@@ -789,9 +772,38 @@ main {
 
 .games-slider-container {
     position: relative;
-    max-width: 1200px;
+    max-width: 1275px;;
     margin: 0 auto;
     overflow: hidden;
+}
+
+.view-all-container {
+    text-align: center;
+    margin: 2rem auto;
+    max-width: 1275px;;
+    padding: 0 80px;
+}
+
+.view-all-button {
+    display: inline-block;
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: white;
+    background: linear-gradient(135deg, #FF00FF, #6C00FF);
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+    transition: transform 0.3s ease, filter 0.3s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.view-all-button:hover {
+    transform: scale(1.05);
+    filter: brightness(1.2);
 }
 
 .slider-control {
@@ -882,30 +894,106 @@ main {
     font-size: 0.9rem;
     color: rgba(255, 255, 255, 0.7);
 }
-
 .game-card .cta-button {
-    margin: 0.75rem 1rem 1rem;
+    margin: 0.75rem auto 1rem;
+    width: calc(100% - 2rem);
 }
 
 /* Portfolio Section */
 .portfolio {
-    margin-bottom: 3rem;
+    padding: 2rem;
+    position: relative;
+    max-width: 1275px;;
+    margin: 0 auto;
+}
+
+.portfolio-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    max-width: 1275px;;
+    margin: 0 auto 2rem;
+    padding: 0 80px;
 }
 
 .section-title {
-    text-align: center;
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
-    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-middle), var(--gradient-end));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    font-size: 2.75rem;
+    font-weight: 900;
+    color: white;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    max-width: 600px;
 }
 
 .section-subtitle {
-    text-align: center;
-    font-size: 1.8rem;
-    color: rgba(255, 255, 255, 0.7);
+    background: #FF00FF;
+    color: white;
+    padding: 0.6rem 2.5rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+    clip-path: polygon(0 0, 97% 3%, 100% 100%, 3% 100%);
+    transition: transform 0.3s ease;
+    width: 450px;
     margin-bottom: 2rem;
+}
+
+.view-all-container {
+    text-align: center;
+    margin: 2rem auto;
+    max-width: 1275px;;
+    padding: 0 80px;
+}
+
+.view-all-button {
+    display: inline-block;
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: white;
+    background: linear-gradient(135deg, #FF00FF, #6C00FF);
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+    transition: transform 0.3s ease, filter 0.3s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.view-all-button:hover {
+    transform: scale(1.05);
+    filter: brightness(1.2);
+}
+
+@media (max-width: 768px) {
+    .portfolio {
+        padding: 1.5rem 0.5rem;
+    }
+
+    .portfolio-header {
+        padding: 0 1rem;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .portfolio .section-title {
+        font-size: 2.25rem;
+    }
+
+    .portfolio .section-subtitle {
+        font-size: 0.8rem;
+        padding: 0.5rem 2rem;
+    }
+
+    .section-subtitle {
+        width: 100%;
+        max-width: 100%;
+    }
 }
 
 /* Footer */
@@ -916,7 +1004,7 @@ footer {
 }
 
 .footer-content {
-    max-width: 1200px;
+    max-width: 1275px;;
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -961,6 +1049,11 @@ footer {
 
     .current-page {
         display: none !important;
+    }
+
+    .section-subtitle {
+        width: 100%;
+        max-width: 100%;
     }
 
     .nav-links {
@@ -1064,7 +1157,8 @@ footer {
     }
 
     .cta-card h2 {
-        font-size: 2rem;
+        font-size: clamp(32px, 8vw, 40px);
+        text-align: center;
     }
 
     .cta-card p {
@@ -1075,74 +1169,44 @@ footer {
         grid-template-columns: 1fr;
     }
 
-    .cta-card.merch {
-        grid-template-columns: 1fr;
-        grid-template-areas:
-            "title"
-            "description"
-            "slider"
-            "button";
-        gap: 2rem;
-        padding: 3rem 2rem;
-    }
-
-    .merch-content {
-        display: contents;
-    }
-
-    .merch-content h2 {
-        grid-area: title;
-        text-align: center;
-        font-size: 2.5rem;
-        margin-bottom: 0;
-    }
-
-    .merch-content p {
-        grid-area: description;
-        text-align: center;
-        font-size: 1.2rem;
-        margin: 0 auto;
-        max-width: 500px;
-    }
-
-    .merch-slider {
-        grid-area: slider;
-        margin: 0 -1rem;
-        padding: 0 1rem;
-    }
-
-    .merch-content .cta-button {
-        grid-area: button;
-        width: 100%;
-        margin: 0 auto;
-        text-align: center;
-    }
-
-    .cta-card.support {
-        grid-template-columns: 1fr;
+    .cta-card.merch .cta-content {
         gap: 1.5rem;
     }
 
-    .support-content {
+    .merch-content {
+        align-items: center;
         text-align: center;
     }
 
-    .cta-card.support .cta-button,
-    .cta-card.bizdev .cta-button,
     .merch-content .cta-button {
         width: 100%;
-        text-align: center;
-        justify-self: center;
     }
 
-    .cta-card.bizdev {
+    .cta-card.support {
+        padding: 3rem 1rem;
+    }
+
+    .cta-card.support .cta-content {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1.5rem;
+    }
+
+    .cta-card.support .text-content {
+        text-align: center;
+    }
+
+    .cta-card.support .cta-button {
+        width: 100%;
+    }
+
+    .cta-card.bizdev .cta-content {
         grid-template-columns: 1fr;
-        grid-template-rows: auto auto auto auto;
         grid-template-areas: 
             "title"
-            "text"
-            "brands"
-            "button";
+            "description"
+            "button"
+            "brands";
         text-align: center;
     }
 
@@ -1260,13 +1324,25 @@ footer {
     padding: 8rem 2rem 4rem;
     min-height: 100vh;
     background: rgb(30, 0, 60);
+    max-width: 1275px;
+    margin: 0 auto;
+}
+
+.games-grid-section .section-title {
+    font-size: 2.75rem;
+    font-weight: 900;
+    color: white;
+    margin: 4rem 0 2rem;  /* Increased top margin for more spacing */
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
 }
 
 .games-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 2rem;
-    padding: 2rem;
+    margin: 0 auto 4rem;  /* Added bottom margin for more spacing */
+    justify-content: center;
 }
 
 .games-grid .game-card {
@@ -1328,6 +1404,20 @@ footer {
 
     .games-grid .game-card h3 {
         font-size: 1.2rem;
+    }
+
+    .hero-cta-container {
+        padding: 0 1rem;
+    }
+
+    .hero-cta-container .cta-button {
+        width: 100%;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1275px) {
+    .games-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     }
 }
 
@@ -1403,7 +1493,7 @@ footer {
 }
 
 .games-hero-content {
-    max-width: 800px;
+    max-width: 1275px;
     text-align: center;
     color: white;
     z-index: 2;
@@ -1472,5 +1562,164 @@ footer {
 
     .games-hero-description {
         padding: 0 1rem;
+    }
+}
+
+@keyframes rotateGradient {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.positions-grid {
+    width: 100%;
+    /*max-width: 800px;*/
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.positions-list {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.position-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+    width: 100%;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+}
+
+.position-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.position-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+}
+
+.position-title {
+    font-family: "Futura", Sans-serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #fff;
+    margin: 0;
+}
+
+.location-tag {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.position-card .apply-button {
+    width: auto;
+    margin: 0 0 0 2rem;
+    padding: 0.75rem 1.5rem;
+    white-space: nowrap;
+}
+
+.loading, .error, .no-positions {
+    text-align: center;
+    padding: 2rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+@media (max-width: 768px) {
+    .positions-grid {
+        padding: 1rem;
+    }
+    
+    .position-card {
+        padding: 1.25rem;
+    }
+    
+    .position-card .apply-button {
+        margin-left: 1rem;
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+.cta-card.support {
+    background: #9933FF;
+    padding: 4rem 2rem;
+}
+
+.cta-card.support .cta-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1275px;;
+    margin: 0 auto;
+}
+
+.cta-card.support .text-content {
+    text-align: left;
+}
+
+.cta-card.support .cta-button {
+    width: 200px;
+    text-align: center;
+    margin: 0;
+}
+
+.cta-card.merch .cta-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 1275px;;
+    margin: 0 auto;
+    gap: 2rem;
+}
+
+.merch-content {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 1rem;
+}
+
+.merch-content .cta-button {
+    width: 200px;
+}
+
+@media (max-width: 768px) {
+    .cta-card.support .cta-content {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1.5rem;
+    }
+
+    .cta-card.support .text-content {
+        text-align: center;
+    }
+
+    .cta-card.support .cta-button {
+        width: 100%;
+    }
+
+    .cta-card.merch .cta-content {
+        align-items: center;
+    }
+
+    .merch-content {
+        text-align: center;
+    }
+
+    .merch-content .cta-button {
+        width: 100%;
     }
 } 
