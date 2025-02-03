@@ -65,7 +65,7 @@ async function fetchNotionCareers() {
         console.error('Error fetching careers from API, falling back to backup data:', error);
         try {
             // Attempt to load backup data
-            const backupResponse = await fetch('/career_output.json');
+            const backupResponse = await fetch('/data/career_output.json');
             if (!backupResponse.ok) {
                 throw new Error(`Backup data HTTP error! status: ${backupResponse.status}`);
             }

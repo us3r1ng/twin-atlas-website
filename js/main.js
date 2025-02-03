@@ -419,7 +419,7 @@ async function initializeApp() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-Shopify-Storefront-Access-Token': process.env.SHOPIFY_STOREFRONT_TOKEN
+                    'X-Shopify-Storefront-Access-Token': 'b23e28d926aae067f2dfeec79746922e'
                 },
                 body: JSON.stringify({ query })
             });
