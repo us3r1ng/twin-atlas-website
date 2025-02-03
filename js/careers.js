@@ -48,7 +48,7 @@ fetchNotionCareers().then(positions => {
 
 async function fetchNotionCareers() {
     try {
-        const response = await fetch('/api/notion-careers.php');
+        const response = await fetch(getAssetPath('api/notion-careers.php'));
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -65,7 +65,7 @@ async function fetchNotionCareers() {
         console.error('Error fetching careers from API, falling back to backup data:', error);
         try {
             // Attempt to load backup data
-            const backupResponse = await fetch('/data/career_output.json');
+            const backupResponse = await fetch(getAssetPath('data/career_output.json'));
             if (!backupResponse.ok) {
                 throw new Error(`Backup data HTTP error! status: ${backupResponse.status}`);
             }
