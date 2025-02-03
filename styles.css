@@ -1592,11 +1592,11 @@ footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.5rem 2rem;
+    padding: 2rem;
     background: rgba(255, 255, 255, 0.05);
-    transition: all 0.3s ease;
-    width: 100%;
-    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
 .position-card:hover {
@@ -1604,10 +1604,8 @@ footer {
 }
 
 .position-info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
     flex: 1;
+    padding-right: 2rem;
 }
 
 .position-title {
@@ -1637,18 +1635,21 @@ footer {
 }
 
 @media (max-width: 768px) {
-    .positions-grid {
-        padding: 1rem;
-    }
-    
     .position-card {
-        padding: 1.25rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1.5rem;
     }
-    
-    .position-card .apply-button {
-        margin-left: 1rem;
-        padding: 0.6rem 1rem;
-        font-size: 0.9rem;
+
+    .position-info {
+        padding-right: 0;
+        width: 100%;
+    }
+
+    .position-card .cta-button {
+        width: 100%;
+        margin-top: 1rem;
     }
 }
 
