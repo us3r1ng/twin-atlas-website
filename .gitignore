@@ -4,7 +4,7 @@
 !.env.example
 
 # Merch website assets
-merch website/assets/
+merch website/
 
 # Node modules
 node_modules/
