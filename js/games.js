@@ -33,21 +33,27 @@ async function initializeApp() {
             grid.innerHTML = ''; // Clear any existing content
             
             games.forEach(game => {
-                const gameCard = document.createElement('div');
+                const gameCard = document.createElement('a');
                 gameCard.className = 'game-card';
+                gameCard.href = `https://www.roblox.com/games/${game.place_id}`
+                gameCard.target = '_blank'
                 
                 // Create the game card HTML
                 gameCard.innerHTML = `
                     <img src="${game.image_url}" alt="${game.title}" draggable="false">
                     <h3>${game.title}</h3>
-                    <a href="https://www.roblox.com/games/${game.place_id}" class="cta-button">Play Now</a>
                 `;
                 
-                // Add animation delay based on position
-                gameCard.style.animation = `fadeIn 0.5s ease ${grid.children.length * 0.1}s forwards`;
-                gameCard.style.opacity = '0';
-                
                 grid.appendChild(gameCard);
+
+                gameCard.style.opacity = 0;
+                setTimeout(() => gameCard.animate([
+                    { opacity: 0, transform: 'positionY(20px)'},
+                    { opacity: 1, transform: 'positionY(0)'}
+                ], {
+                    duration: 750,
+                    fill: 'forwards'
+                }), 100 * grid.children.length);
             });
 
             // Hide empty category sections
