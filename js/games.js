@@ -53,7 +53,7 @@ async function initializeApp() {
                 ], {
                     duration: 750,
                     fill: 'forwards'
-                }), 100 * grid.children.length);
+                }), 75 * grid.children.length);
             });
 
             // Hide empty category sections
