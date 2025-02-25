@@ -52,7 +52,8 @@ async function initializeApp() {
                     { opacity: 1, transform: 'translateY(0)'}
                 ], {
                     duration: 500,
-                    fill: 'forwards'
+                    fill: 'forwards',
+                    easing: 'ease'
                 }), 75 * grid.children.length);
             });
 
