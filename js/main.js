@@ -160,7 +160,7 @@ async function initializeApp() {
         const viewAllContainer = document.createElement('div');
         viewAllContainer.className = 'view-all-container';
         viewAllContainer.innerHTML = `
-            <a href="${getAssetPath('games.html')}" class="view-all-button">View All Games</a>
+            <a href="${getAssetPath('games')}" class="view-all-button">View All Games</a>
         `;
         gamesSlider.parentElement.after(viewAllContainer);
 

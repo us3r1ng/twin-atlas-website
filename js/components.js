@@ -22,8 +22,8 @@ async function loadComponent(elementId, componentPath) {
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         // Load header and footer
-        await loadComponent('header', 'components/header.html');
-        await loadComponent('footer', 'components/footer.html');
+        await loadComponent('header', 'components/header');
+        await loadComponent('footer', 'components/footer');
     } catch (error) {
         console.error('Error loading components:', error);
     }
