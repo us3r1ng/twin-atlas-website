@@ -30,7 +30,7 @@ $studioData = [
 
 // Save to studio_data.json
 $jsonData = json_encode($studioData, JSON_PRETTY_PRINT);
-if (file_put_contents('../data/studio_data.json', $jsonData) === false) {
+if (file_put_contents(__DIR__ . '/../data/studio_data.json', $jsonData) === false) {
     die('Error writing to ../data/studio_data.json');
 }
 

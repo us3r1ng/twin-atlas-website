@@ -1,7 +1,7 @@
 <?php
 
 // Read local game data JSON file
-$gameData = file_get_contents('data/game_data.json');
+$gameData = file_get_contents(__DIR__ . '/../data/game_data.json');
 if ($gameData === false) {
     die('Error: Failed to read game_data.json');
 }
@@ -93,7 +93,7 @@ usort($outputGames, function($a, $b) {
 });
 
 // Output the updated game data to a JSON file
-file_put_contents('data/updated_game_data.json', json_encode($outputGames, JSON_PRETTY_PRINT));
+file_put_contents(__DIR__ . '/../data/updated_game_data.json', json_encode($outputGames, JSON_PRETTY_PRINT));
 
 echo "Game stats updated successfully.\n";
 
