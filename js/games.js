@@ -46,15 +46,17 @@ async function initializeApp() {
                 
                 grid.appendChild(gameCard);
 
-                gameCard.style.opacity = 0;
-                setTimeout(() => gameCard.animate([
-                    { opacity: 0, transform: 'translateY(20px)'},
-                    { opacity: 1, transform: 'translateY(0)'}
-                ], {
-                    duration: 500,
-                    fill: 'forwards',
-                    easing: 'ease'
-                }), 75 * grid.children.length);
+		        gameCard.style.opacity = 0;
+                setTimeout(() => {
+                    gameCard.animate([
+                        { opacity: 0, transform: 'translateY(20px)'},
+                        { opacity: 1, transform: 'translateY(0)'}
+                    ], {
+                        duration: 500,
+                        easing: 'ease'
+                    });
+                    gameCard.style.opacity = null;
+                }, 75 * grid.children.length);
             });
 
             // Hide empty category sections
