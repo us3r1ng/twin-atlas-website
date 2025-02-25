@@ -48,10 +48,10 @@ async function initializeApp() {
 
                 gameCard.style.opacity = 0;
                 setTimeout(() => gameCard.animate([
-                    { opacity: 0, transform: 'positionY(20px)'},
-                    { opacity: 1, transform: 'positionY(0)'}
+                    { opacity: 0, transform: 'translateY(20px)'},
+                    { opacity: 1, transform: 'translateY(0)'}
                 ], {
-                    duration: 750,
+                    duration: 500,
                     fill: 'forwards'
                 }), 75 * grid.children.length);
             });
