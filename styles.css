@@ -314,9 +314,10 @@ body {
     width: 100vw;
     margin-left: calc(-50vw + 50%);
     margin-right: calc(-50vw + 50%);
+    margin-top: -4rem;
     overflow: hidden;
     position: relative;
-    padding: 1rem 0;
+    padding: 5rem 0 1rem;
 }
 
 .merch-items {
