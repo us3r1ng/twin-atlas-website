@@ -10,7 +10,9 @@
     <script src="js/utils.js"></script>
 </head>
 <body>
-    <div id="header"></div>
+    <?php
+        include_once('components/header.php');
+    ?>
 
     <main>
         <section class="error-section">

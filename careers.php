@@ -11,7 +11,9 @@
     <script src="js/careers.js" async></script>
 </head>
 <body>
-    <div id="header-placeholder"></div>
+    <?php
+        include_once('components/header.php');
+    ?>
 
     <main>
         <section class="hero careers-hero">
