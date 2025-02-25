@@ -8,12 +8,6 @@
     <link rel="icon" href="/icon/ta-gradientcircle-192x192.png" sizes="192x192">
     <link rel="stylesheet" href="styles.css">
     <script src="js/utils.js"></script>
-    <script src="js/components.js"></script>
-    <script>
-        // Start loading components immediately
-        loadComponent('header-placeholder', 'components/header');
-        loadComponent('footer-placeholder', 'components/footer');
-    </script>
     <script src="js/careers.js" async></script>
 </head>
 <body>
@@ -129,7 +123,9 @@
         </section>
     </main>
 
-    <div id="footer-placeholder"></div>
+    <?php
+        include_once('components/footer.php');
+    ?>
 
     <style>
         .careers-hero {

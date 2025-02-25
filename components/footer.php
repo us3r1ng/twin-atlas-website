@@ -1,4 +1,4 @@
-<footer>
+<footer id="footer">
     <div class="footer-content">
         <div class="footer-section">
             <h3>Twin Atlas</h3>

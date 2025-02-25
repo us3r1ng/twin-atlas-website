@@ -1,4 +1,4 @@
-<header>
+<header id="header">
     <nav class="main-nav">
         <div class="logo">
             <img src="icon/ta_circle.png" alt="Twin Atlas Logo" class="logo-img">

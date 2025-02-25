@@ -8,7 +8,6 @@
     <link rel="icon" href="/icon/ta-gradientcircle-192x192.png" sizes="192x192">
     <link rel="stylesheet" href="styles.css">
     <script src="js/utils.js"></script>
-    <script src="js/components.js"></script>
 </head>
 <body>
     <div id="header"></div>
@@ -22,7 +21,9 @@
         </section>
     </main>
 
-    <div id="footer"></div>
+    <?php
+        include_once('components/footer.php');
+    ?>
 
     <script src="main.js"></script>
 </body>
