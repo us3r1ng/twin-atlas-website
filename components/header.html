@@ -34,29 +34,26 @@
             }
 
             // Get current page from URL
-            const path = window.location.pathname;
-            const basePath = getBasePath();
-            const relativePath = path.includes(basePath) ? path.substring(path.indexOf(basePath) + basePath.length) : path;
-            const currentFile = relativePath.includes('index.html') || relativePath === '/' || relativePath === '' ? 'index.html' : relativePath.split('/').pop();
+            const { pathname: path, href } = window.location;
 
             // Update navigation state
             document.querySelectorAll('.nav-links a').forEach(link => {
                 // Skip external links
                 if (link.target === '_blank') return;
 
-                const href = link.getAttribute('href');
-                
-                // Check if this link matches current page
-                if (href === currentFile) {
-                    link.classList.add('active');
-                    if (currentPage) {
-                        currentPage.textContent = link.textContent;
-                    }
-                }
+                const linkHref = link.getAttribute('href');
 
                 // Update href to include base path
                 if (!link.target) {
                     link.href = getAssetPath(href);
+                }
+
+                // Check if this link matches current page
+                if (new URL(linkHref, href).href === href) {
+                    link.classList.add('active');
+                    if (currentPage) {
+                        currentPage.textContent = link.textContent;
+                    }
                 }
 
                 // Handle click events
