@@ -1,18 +1,5 @@
-// Wait for components to load before initializing
-document.addEventListener('DOMContentLoaded', () => {
-    // Wait for components to be loaded
-    const checkComponentsLoaded = setInterval(() => {
-        const header = document.querySelector('.main-nav');
-        const footer = document.querySelector('.footer-content');
-        
-        if (header && footer) {
-            clearInterval(checkComponentsLoaded);
-            initializeApp();
-        }
-    }, 100);
-});
 
-async function initializeApp() {
+document.addEventListener('DOMContentLoaded', async function () {
     // Initialize stats variable at the top level
     let stats = {
         experienceCount: { target: 0, current: 0 },
@@ -311,20 +298,6 @@ async function initializeApp() {
         console.error('Error loading game data:', error);
     }
 
-    // Form handlers for bizdev and support buttons
-    const bizdevButton = document.getElementById('bizdevButton');
-    const supportButton = document.getElementById('supportButton');
-
-    bizdevButton.addEventListener('click', () => {
-        // Placeholder for third-party form integration
-        alert('Business inquiry form will be integrated here');
-    });
-
-    supportButton.addEventListener('click', () => {
-        // Placeholder for third-party form integration
-        alert('Support form will be integrated here');
-    });
-
     // Smooth scrolling for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
@@ -552,4 +525,4 @@ async function initializeApp() {
 
     // Initialize both sliders
     await initializeBrandsSlider();
-} 
+});

@@ -7,7 +7,7 @@
     <link rel="icon" href="/icon/ta-gradientcircle-32x32.png" sizes="32x32">
     <link rel="icon" href="/icon/ta-gradientcircle-192x192.png" sizes="192x192">
     <link rel="stylesheet" href="styles.css">
-    <script src="js/utils.js"></script>
+    <script src="js/shared.js"></script>
 </head>
 <body>
     <?php
@@ -27,7 +27,7 @@
                 <div class="cta-content">
                     <h2>Introduce your brand to millions</h2>
                     <p>Millions of people. Billions of plays. Why not partner with a game development studio who knows what your customers want to play?</p>
-                    <button class="cta-button" id="bizdevButton">Let's Talk Business</button>
+                    <button class="cta-button contact-form-button" id="bizdevButton">Let's Talk Business</button>
                     <div class="brands-slider">
                         <div class="brands-container">
                             <!-- Brands will be populated by JavaScript -->
@@ -57,7 +57,7 @@
                         <h2>Need Help?</h2>
                         <p>Our support team is here for you</p>
                     </div>
-                    <button class="cta-button" id="supportButton">Contact Support</button>
+                    <button class="cta-button contact-form-button" id="supportButton">Contact Support</button>
                 </div>
             </div>
         </section>
@@ -91,6 +91,7 @@
     </main>
 
     <?php
+        include_once('components/contact-form.php');
         include_once('components/footer.php');
     ?>
 

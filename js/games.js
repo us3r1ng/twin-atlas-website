@@ -1,18 +1,5 @@
 // Wait for components to load before initializing
-document.addEventListener('DOMContentLoaded', () => {
-    // Wait for components to be loaded
-    const checkComponentsLoaded = setInterval(() => {
-        const header = document.querySelector('.main-nav');
-        const footer = document.querySelector('.footer-content');
-        
-        if (header && footer) {
-            clearInterval(checkComponentsLoaded);
-            initializeApp();
-        }
-    }, 100);
-});
-
-async function initializeApp() {
+document.addEventListener('DOMContentLoaded', async function() {
     try {
         // Load game data
         const response = await fetch('data/updated_game_data.json');
@@ -84,4 +71,4 @@ async function initializeApp() {
             }
         });
     }
-} 
+});

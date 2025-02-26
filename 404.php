@@ -7,7 +7,7 @@
     <link rel="icon" href="/icon/ta-gradientcircle-32x32.png" sizes="32x32">
     <link rel="icon" href="/icon/ta-gradientcircle-192x192.png" sizes="192x192">
     <link rel="stylesheet" href="styles.css">
-    <script src="js/utils.js"></script>
+    <script src="js/shared.js"></script>
 </head>
 <body>
     <?php

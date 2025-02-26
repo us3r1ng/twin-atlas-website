@@ -974,6 +974,87 @@ main {
     }
 }
 
+/* Contact Form */
+.contact-popup-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    visibility: hidden;
+    z-index: 1000;
+}
+
+.contact-popup-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.contact-popup-content {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: min(600px, 100vw);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    height: 100%;
+    background: #fbfcfe;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+}
+
+.popup-active {
+    visibility: visible;
+}
+
+.popup-active .contact-popup-overlay {
+    opacity: 1;
+}
+
+.popup-active .contact-popup-content {
+    transform: none;
+}
+
+.contact-popup-header {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.contact-popup-content h2 {
+    color: black;
+    font-family: "Futura", Sans-serif;
+}
+
+.contact-popup-content .close-button {
+    color: black;
+    float: right;
+    font-size: 32px;
+    line-height: 1;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.contact-popup-content .close-button:hover,
+.content-popup-content .close-button:focus {
+    color: #444;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.contact-popup-content iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
 /* Footer */
 footer {
     background: linear-gradient(135deg, var(--gradient-start), var(--gradient-middle), var(--gradient-end));
