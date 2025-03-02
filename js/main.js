@@ -10,18 +10,14 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Load game data and studio data
     try {
         // Load studio data first
-        const studioResponse = await fetch('data/studio_data.json');
+        const studioResponse = await fetch('data/dynamic/studio_data.json');
         const studioData = await studioResponse.json();
         stats.communitySize.target = studioData.communitySize;
 
-        // First load the original game_data.json to get total game count
-        const originalResponse = await fetch('data/game_data.json');
-        const originalGameData = await originalResponse.json();
-        const totalGames = originalGameData.length;
-
         // Then load the updated game data for everything else
-        const response = await fetch('data/updated_game_data.json');
+        const response = await fetch('data/dynamic/game_data.json');
         const gameData = await response.json();
+        const totalGames = gameData.length;
         
         console.log(gameData);
 
@@ -479,7 +475,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Function to generate brand frames
     async function initializeBrandsSlider() {
         try {
-            const response = await fetch('data/brand_data.json');
+            const response = await fetch('data/static/brand_data.json');
             const brandData = await response.json();
             const brandsContainer = document.querySelector('.brands-container');
             

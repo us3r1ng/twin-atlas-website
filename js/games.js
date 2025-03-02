@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded', async function() {
     try {
         // Load game data
-        const response = await fetch('data/updated_game_data.json');
+        const response = await fetch('data/dynamic/game_data.json');
         const gameData = await response.json();
 
         // Group games by category and sort each category by visits

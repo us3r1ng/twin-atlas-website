@@ -30,8 +30,8 @@ $studioData = [
 
 // Save to studio_data.json
 $jsonData = json_encode($studioData, JSON_PRETTY_PRINT);
-if (file_put_contents(__DIR__ . '/../data/studio_data.json', $jsonData) === false) {
-    die('Error writing to ../data/studio_data.json');
+if (file_put_contents(__DIR__ . '/../data/dynamic/studio_data.json', $jsonData) === false) {
+    die('Error writing to ../data/dynamic/studio_data.json');
 }
 
 echo "Studio data updated successfully.\n";
