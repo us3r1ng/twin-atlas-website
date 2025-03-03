@@ -3,7 +3,7 @@
         <a href="/" class="logo">
             <img src="icon/ta_circle.png" alt="Twin Atlas Logo" class="logo-img">
             <img src="icon/textual_logo.png" alt="Twin Atlas" class="logo-text">
-        </div>
+        </a>
         <span class="current-page">Home</span>
         <button class="mobile-menu-btn">
             <div class="hamburger">
