@@ -8,6 +8,7 @@
     <link rel="icon" href="/icon/ta-gradientcircle-192x192.png" sizes="192x192">
     <link rel="stylesheet" href="styles.css">
     <script src="js/shared.js"></script>
+    <script src="//www.googletagmanager.com/gtag/js?id=G-6YVQZTK28J" data-cfasync="false" data-wpfc-render="false" async=""></script>
 </head>
 <body>
     <?php

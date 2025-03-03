@@ -505,7 +505,7 @@ header::before {
     transition: transform 0.3s ease;
 }
 
-.logo:hover {
+header .logo:hover {
     transform: scale(1.05);
 }
 
@@ -1057,7 +1057,7 @@ main {
 
 /* Footer */
 footer {
-    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-middle), var(--gradient-end));
+    background: linear-gradient(135deg, #FE0065, #D10C80, #8720AF, #0C42FC);
     color: white;
     padding: 3rem 1rem 1rem;
 }
@@ -1071,7 +1071,7 @@ footer {
     margin-bottom: 2rem;
 }
 
-.footer-section h3 {
+.footer-section > :first-child {
     margin-bottom: 1rem;
 }
 

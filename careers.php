@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="styles.css">
     <script src="js/shared.js"></script>
     <script src="js/careers.js" async></script>
+    <script src="//www.googletagmanager.com/gtag/js?id=G-6YVQZTK28J" data-cfasync="false" data-wpfc-render="false" async=""></script>
 </head>
 <body>
     <?php

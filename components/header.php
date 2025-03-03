@@ -1,6 +1,6 @@
 <header id="header">
     <nav class="main-nav">
-        <div class="logo">
+        <a href="/" class="logo">
             <img src="icon/ta_circle.png" alt="Twin Atlas Logo" class="logo-img">
             <img src="icon/textual_logo.png" alt="Twin Atlas" class="logo-text">
         </div>

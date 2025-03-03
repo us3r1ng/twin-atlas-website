@@ -1,7 +1,10 @@
 <footer id="footer">
     <div class="footer-content">
         <div class="footer-section">
-            <h3>Twin Atlas</h3>
+            <div class="logo">
+                <img src="icon/ta_circle.png" alt="Twin Atlas Logo" class="logo-img">
+                <img src="icon/textual_logo.png" alt="Twin Atlas" class="logo-text">
+            </div>
             <p>Creating next-generation Roblox experiences</p>
         </div>
         <div class="footer-section">
