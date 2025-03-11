@@ -1,18 +1,5 @@
-// Wait for components to load before initializing
-document.addEventListener('DOMContentLoaded', () => {
-    // Wait for components to be loaded
-    const checkComponentsLoaded = setInterval(() => {
-        const header = document.querySelector('.main-nav');
-        const footer = document.querySelector('.footer-content');
-        
-        if (header && footer) {
-            clearInterval(checkComponentsLoaded);
-            initializeApp();
-        }
-    }, 100);
-});
 
-async function initializeApp() {
+document.addEventListener('DOMContentLoaded', async function () {
     // Initialize stats variable at the top level
     let stats = {
         experienceCount: { target: 0, current: 0 },
@@ -23,18 +10,14 @@ async function initializeApp() {
     // Load game data and studio data
     try {
         // Load studio data first
-        const studioResponse = await fetch('data/studio_data.json');
+        const studioResponse = await fetch('data/dynamic/studio_data.json');
         const studioData = await studioResponse.json();
         stats.communitySize.target = studioData.communitySize;
 
-        // First load the original game_data.json to get total game count
-        const originalResponse = await fetch('data/game_data.json');
-        const originalGameData = await originalResponse.json();
-        const totalGames = originalGameData.length;
-
         // Then load the updated game data for everything else
-        const response = await fetch('data/updated_game_data.json');
+        const response = await fetch('data/dynamic/game_data.json');
         const gameData = await response.json();
+        const totalGames = gameData.length;
         
         console.log(gameData);
 
@@ -160,7 +143,7 @@ async function initializeApp() {
         const viewAllContainer = document.createElement('div');
         viewAllContainer.className = 'view-all-container';
         viewAllContainer.innerHTML = `
-            <a href="${getAssetPath('games.html')}" class="view-all-button">View All Games</a>
+            <a href="${getAssetPath('games')}" class="view-all-button">View All Games</a>
         `;
         gamesSlider.parentElement.after(viewAllContainer);
 
@@ -310,20 +293,6 @@ async function initializeApp() {
     } catch (error) {
         console.error('Error loading game data:', error);
     }
-
-    // Form handlers for bizdev and support buttons
-    const bizdevButton = document.getElementById('bizdevButton');
-    const supportButton = document.getElementById('supportButton');
-
-    bizdevButton.addEventListener('click', () => {
-        // Placeholder for third-party form integration
-        alert('Business inquiry form will be integrated here');
-    });
-
-    supportButton.addEventListener('click', () => {
-        // Placeholder for third-party form integration
-        alert('Support form will be integrated here');
-    });
 
     // Smooth scrolling for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -506,7 +475,7 @@ async function initializeApp() {
     // Function to generate brand frames
     async function initializeBrandsSlider() {
         try {
-            const response = await fetch('data/brand_data.json');
+            const response = await fetch('data/static/brand_data.json');
             const brandData = await response.json();
             const brandsContainer = document.querySelector('.brands-container');
             
@@ -552,4 +521,4 @@ async function initializeApp() {
 
     // Initialize both sliders
     await initializeBrandsSlider();
-} 
+});

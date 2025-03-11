@@ -1,7 +1,7 @@
 <?php
 
 // Read local game data JSON file
-$gameData = file_get_contents('game_data.json');
+$gameData = file_get_contents(__DIR__ . '/../data/static/game_data.json');
 if ($gameData === false) {
     die('Error: Failed to read game_data.json');
 }
@@ -35,10 +35,12 @@ $universeIdList = implode(',', $universeIds);
 // Fetch visit and vote data
 $visitsUrl = "https://games.roblox.com/v1/games?universeIds=$universeIdList";
 $votesUrl = "https://games.roblox.com/v1/games/votes?universeIds=$universeIdList";
+$iconsUrl = "https://thumbnails.roblox.com/v1/games/icons?size=420x420&format=Png&universeIds=$universeIdList";
 
 // Fetch data
 $visitData = fetchData($visitsUrl);
 $voteData = fetchData($votesUrl);
+$iconsData = fetchData($iconsUrl);
 
 // Index visit and vote data by universe ID for easy lookup
 $visitsIndexed = [];
@@ -55,6 +57,11 @@ foreach ($voteData['data'] as $item) {
     $votesIndexed[$item['id']] = $likeRatio;
     $upVotesIndexed[$item['id']] = $item['upVotes'];
     $downVotesIndexed[$item['id']] = $item['downVotes'];
+}
+
+$iconsIndexed = [];
+foreach ($iconsData['data'] as $item) {
+    $iconsIndexed[$item['targetId']] = $item['imageUrl'];
 }
 
 // Add visits and votes to all games
@@ -74,7 +81,7 @@ foreach ($games as $game) {
         'like_ratio' => $likeRatio,
         'up_votes' => $upVotes,
         'down_votes' => $downVotes,
-        'image_url' => $game['image_url'],
+        'image_url' => $game['image_url'] ?? $iconsIndexed[$universeId],
         'pinned' => $game['pinned'],
         'category' => $game['category'] ?? 'original'
     ];
@@ -86,7 +93,7 @@ usort($outputGames, function($a, $b) {
 });
 
 // Output the updated game data to a JSON file
-file_put_contents('updated_game_data.json', json_encode($outputGames, JSON_PRETTY_PRINT));
+file_put_contents(__DIR__ . '/../data/dynamic/game_data.json', json_encode($outputGames, JSON_PRETTY_PRINT));
 
 echo "Game stats updated successfully.\n";
 

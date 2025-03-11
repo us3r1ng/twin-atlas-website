@@ -1,9 +1,9 @@
-<header>
+<header id="header">
     <nav class="main-nav">
-        <div class="logo">
+        <a href="/" class="logo">
             <img src="icon/ta_circle.png" alt="Twin Atlas Logo" class="logo-img">
             <img src="icon/textual_logo.png" alt="Twin Atlas" class="logo-text">
-        </div>
+        </a>
         <span class="current-page">Home</span>
         <button class="mobile-menu-btn">
             <div class="hamburger">
@@ -13,10 +13,10 @@
             </div>
         </button>
         <div class="nav-links">
-            <a href="index.html">Home</a>
+            <a href="/">Home</a>
             <a href="https://merch.twinatlas.com" target="_blank">Merch</a>
-            <a href="games.html">Games</a>
-            <a href="careers.html">Careers</a>
+            <a href="/games">Games</a>
+            <a href="/careers">Careers</a>
         </div>
     </nav>
     <script>
@@ -34,29 +34,26 @@
             }
 
             // Get current page from URL
-            const path = window.location.pathname;
-            const basePath = getBasePath();
-            const relativePath = path.includes(basePath) ? path.substring(path.indexOf(basePath) + basePath.length) : path;
-            const currentFile = relativePath.includes('index.html') || relativePath === '/' || relativePath === '' ? 'index.html' : relativePath.split('/').pop();
+            const { pathname: path, href } = window.location;
 
             // Update navigation state
             document.querySelectorAll('.nav-links a').forEach(link => {
                 // Skip external links
                 if (link.target === '_blank') return;
 
-                const href = link.getAttribute('href');
-                
+                const linkHref = link.getAttribute('href');
+
+                // Update href to include base path
+                if (!link.target) {
+                    link.href = getAssetPath(linkHref);
+                }
+
                 // Check if this link matches current page
-                if (href === currentFile) {
+                if (new URL(linkHref, href).href === href) {
                     link.classList.add('active');
                     if (currentPage) {
                         currentPage.textContent = link.textContent;
                     }
-                }
-
-                // Update href to include base path
-                if (!link.target) {
-                    link.href = getAssetPath(href);
                 }
 
                 // Handle click events

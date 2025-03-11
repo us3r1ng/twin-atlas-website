@@ -4,18 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Careers - Twin Atlas</title>
+    <link rel="icon" href="/icon/ta-gradientcircle-32x32.png" sizes="32x32">
+    <link rel="icon" href="/icon/ta-gradientcircle-192x192.png" sizes="192x192">
     <link rel="stylesheet" href="styles.css">
-    <script src="js/utils.js"></script>
-    <script src="js/components.js"></script>
-    <script>
-        // Start loading components immediately
-        loadComponent('header-placeholder', 'components/header.html');
-        loadComponent('footer-placeholder', 'components/footer.html');
-    </script>
+    <script src="js/shared.js"></script>
     <script src="js/careers.js" async></script>
+    <script src="//www.googletagmanager.com/gtag/js?id=G-6YVQZTK28J" data-cfasync="false" data-wpfc-render="false" async=""></script>
 </head>
 <body>
-    <div id="header-placeholder"></div>
+    <?php
+        include_once('components/header.php');
+    ?>
 
     <main>
         <section class="hero careers-hero">
@@ -248,7 +247,9 @@
         </section>
     </main>
 
-    <div id="footer-placeholder"></div>
+    <?php
+        include_once('components/footer.php');
+    ?>
 
     <style>
         .careers-hero {

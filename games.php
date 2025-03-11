@@ -4,12 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Games - Twin Atlas</title>
+    <link rel="icon" href="/icon/ta-gradientcircle-32x32.png" sizes="32x32">
+    <link rel="icon" href="/icon/ta-gradientcircle-192x192.png" sizes="192x192">
     <link rel="stylesheet" href="styles.css">
-    <script src="js/utils.js"></script>
-    <script src="js/components.js"></script>
+    <script src="js/shared.js"></script>
+    <script src="//www.googletagmanager.com/gtag/js?id=G-6YVQZTK28J" data-cfasync="false" data-wpfc-render="false" async=""></script>
 </head>
 <body>
-    <div id="header"></div>
+    <?php
+        include_once('components/header.php');
+    ?>
 
     <main>
         <section class="games-hero">
@@ -17,7 +21,7 @@
                 <h1>GAMES</h1>
                 <p class="games-hero-description">From award-winning original games to brand integrations that reach millions, Twin Atlas delivers immersive experiences that players love. Partner with us to bring your brand to life.</p>
                 <div class="hero-cta-container">
-                    <a href="/partner-with-us" class="cta-button">Partner With Us</a>
+                    <a class="cta-button contact-form-button">Partner With Us</a>
                 </div>
             </div>
             <div class="games-hero-character"></div>
@@ -42,7 +46,10 @@
         </section>
     </main>
 
-    <div id="footer"></div>
+    <?php
+        include_once('components/contact-form.php');
+        include_once('components/footer.php');
+    ?>
 
     <script src="js/games.js"></script>
 </body>

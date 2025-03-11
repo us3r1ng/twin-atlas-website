@@ -1,21 +1,8 @@
 // Wait for components to load before initializing
-document.addEventListener('DOMContentLoaded', () => {
-    // Wait for components to be loaded
-    const checkComponentsLoaded = setInterval(() => {
-        const header = document.querySelector('.main-nav');
-        const footer = document.querySelector('.footer-content');
-        
-        if (header && footer) {
-            clearInterval(checkComponentsLoaded);
-            initializeApp();
-        }
-    }, 100);
-});
-
-async function initializeApp() {
+document.addEventListener('DOMContentLoaded', async function() {
     try {
         // Load game data
-        const response = await fetch('data/updated_game_data.json');
+        const response = await fetch('data/dynamic/game_data.json');
         const gameData = await response.json();
 
         // Group games by category and sort each category by visits
@@ -33,21 +20,30 @@ async function initializeApp() {
             grid.innerHTML = ''; // Clear any existing content
             
             games.forEach(game => {
-                const gameCard = document.createElement('div');
+                const gameCard = document.createElement('a');
                 gameCard.className = 'game-card';
+                gameCard.href = `https://www.roblox.com/games/${game.place_id}`
+                gameCard.target = '_blank'
                 
                 // Create the game card HTML
                 gameCard.innerHTML = `
                     <img src="${game.image_url}" alt="${game.title}" draggable="false">
                     <h3>${game.title}</h3>
-                    <a href="https://www.roblox.com/games/${game.place_id}" class="cta-button">Play Now</a>
                 `;
                 
-                // Add animation delay based on position
-                gameCard.style.animation = `fadeIn 0.5s ease ${grid.children.length * 0.1}s forwards`;
-                gameCard.style.opacity = '0';
-                
                 grid.appendChild(gameCard);
+
+		        gameCard.style.opacity = 0;
+                setTimeout(() => {
+                    gameCard.animate([
+                        { opacity: 0, transform: 'translateY(20px)'},
+                        { opacity: 1, transform: 'translateY(0)'}
+                    ], {
+                        duration: 500,
+                        easing: 'ease'
+                    });
+                    gameCard.style.opacity = null;
+                }, 75 * grid.children.length);
             });
 
             // Hide empty category sections
@@ -75,4 +71,4 @@ async function initializeApp() {
             }
         });
     }
-} 
+});
