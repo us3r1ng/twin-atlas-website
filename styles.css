@@ -60,6 +60,7 @@ body {
     color: var(--text-primary);
     background: rgb(30, 0, 60);
     min-height: 100vh;
+    overflow-x: hidden;
 }
 
 /* Common button style */
@@ -574,6 +575,7 @@ main {
     background: rgb(30, 0, 60);
     min-height: calc(100vh - 72px);
     color: white;
+    overflow-x: hidden;
 }
 
 /* Hero Section */
