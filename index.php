@@ -28,7 +28,7 @@
                 <div class="cta-content">
                     <h2>Introduce your brand to millions</h2>
                     <p>Millions of people. Billions of plays. Why not partner with a game development studio who knows what your customers want to play?</p>
-                    <button class="cta-button contact-form-button" id="bizdevButton">Let's Talk Business</button>
+                    <button class="cta-button contact-form-button" id="bizdevButton" data-form-id="business">Let's Talk Business</button>
                     <div class="brands-slider">
                         <div class="brands-container">
                             <!-- Brands will be populated by JavaScript -->
@@ -58,7 +58,7 @@
                         <h2>Need Help?</h2>
                         <p>Our support team is here for you</p>
                     </div>
-                    <button class="cta-button contact-form-button" id="supportButton">Contact Support</button>
+                    <button class="cta-button contact-form-button" id="supportButton" data-form-id="game">Contact Support</button>
                 </div>
             </div>
         </section>

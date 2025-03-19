@@ -21,7 +21,7 @@
                 <h1>GAMES</h1>
                 <p class="games-hero-description">From award-winning original games to brand integrations that reach millions, Twin Atlas delivers immersive experiences that players love. Partner with us to bring your brand to life.</p>
                 <div class="hero-cta-container">
-                    <a class="cta-button contact-form-button">Partner With Us</a>
+                    <a class="cta-button contact-form-button" data-form-id="business">Partner With Us</a>
                 </div>
             </div>
             <div class="games-hero-character"></div>

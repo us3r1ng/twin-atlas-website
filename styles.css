@@ -975,6 +975,10 @@ main {
 }
 
 /* Contact Form */
+body.contact-form-active {
+    overflow: hidden;
+}
+
 .contact-popup-container {
     position: fixed;
     top: 0;
@@ -996,6 +1000,14 @@ main {
     transition: opacity 0.3s ease;
 }
 
+.contact-popup-exit {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(100% - min(600px, 100vw));
+    height: 100%;
+}
+
 .contact-popup-content {
     position: absolute;
     top: 0;
@@ -1004,13 +1016,14 @@ main {
     transform: translateX(100%);
     transition: transform 0.3s ease;
     height: 100%;
-    background: #fbfcfe;
+    background: #1e003c;
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
 }
 
-.popup-active {
+.popup-active,
+.popup-closing {
     visibility: visible;
 }
 
@@ -1023,28 +1036,26 @@ main {
 }
 
 .contact-popup-header {
+    position: absolute;
+    right: 0;
     padding: 20px;
     display: flex;
     justify-content: space-between;
 }
 
-.contact-popup-content h2 {
-    color: black;
-    font-family: "Futura", Sans-serif;
-}
-
 .contact-popup-content .close-button {
-    color: black;
+    color: white;
     float: right;
     font-size: 32px;
     line-height: 1;
     font-weight: bold;
     cursor: pointer;
+    transition: color 0.3s ease;
 }
 
 .contact-popup-content .close-button:hover,
 .content-popup-content .close-button:focus {
-    color: #444;
+    color: #ccc;
     text-decoration: none;
     cursor: pointer;
 }
@@ -1052,7 +1063,19 @@ main {
 .contact-popup-content iframe {
     width: 100%;
     height: 100%;
+    padding-top: 20px;
     border: none;
+}
+
+@media screen and (max-width: 500px) {
+    .contact-popup-content .close-button {
+        color: black;
+    }
+
+    .contact-popup-content .close-button:hover,
+    .contact-popup-content .close-button:focus {
+        color: #444;
+    }
 }
 
 /* Footer */

@@ -18,21 +18,31 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     if (form) {
         const closeButton = form.querySelector('.close-button');
+        const exitTrigger = form.querySelector('.contact-popup-exit');
         const formFrame = form.querySelector('iframe');
 
         formButtons.forEach(button => button.addEventListener('click', () => {
-            if (form.classList.contains('popup-active'))
+            if (form.classList.contains('popup-active') || form.classList.contains('popup-closing'))
                 return;
 
-            formFrame.src = 'http://forms.twinatlas.com/form/contact';
+            formFrame.src = `https://forms.twinatlas.com/form/${button.attributes['data-form-id'].value}`;
             form.classList.add('popup-active');
+            document.body.classList.add('contact-form-active');
         }));
 
-        closeButton.addEventListener('click', e => {
+        const close = e => {
             e.preventDefault();
             e.stopPropagation();
+            form.classList.add('popup-closing');
             form.classList.remove('popup-active');
-            formFrame.src = '';
-        });
+            document.body.classList.remove('contact-form-active');
+            setTimeout(() => {
+                formFrame.src = '';
+                form.classList.remove('popup-closing');
+            }, 400);
+        }
+
+        closeButton.addEventListener('click', close);
+        exitTrigger.addEventListener('click', close);
     }
 });
